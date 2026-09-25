@@ -71,6 +71,22 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/notifications', notificationRoutes);
 
+// Root Handler
+app.get('/', (req: Request, res: Response) => {
+  res.json({
+    success: true,
+    message: '🦷 DentaKart B2B Dental Marketplace Platform API is Running Live!',
+    status: 'online',
+    endpoints: {
+      health: '/api/health',
+      products: '/api/products',
+      categories: '/api/categories',
+      auth: '/api/auth/login'
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Health Check
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({
