@@ -16,7 +16,6 @@ import {
 import api from '../../services/api';
 import { Product, Category } from '../../types';
 import { ProductCard } from '../../components/doctor/ProductCard';
-import { WhatsAppPill } from '../../components/doctor/WhatsAppPill';
 import { useCart } from '../../context/CartContext';
 import { FALLBACK_PRODUCTS } from '../../data/fallbackProducts';
 
@@ -209,8 +208,8 @@ export const DoctorHomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20">
-      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 space-y-3.5 pt-2">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20 w-full max-w-full overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 space-y-3 pt-2 w-full max-w-full overflow-x-hidden">
         
         {/* 1. Compact Slim Promo Banner */}
         <section>
@@ -465,9 +464,6 @@ export const DoctorHomePage: React.FC = () => {
         </section>
 
       </div>
-
-      {/* Floating WhatsApp Live Button */}
-      <WhatsAppPill />
     </div>
   );
 };
