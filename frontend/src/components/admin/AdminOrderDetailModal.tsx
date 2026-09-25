@@ -226,57 +226,60 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white dark:bg-slate-900 w-full max-w-5xl max-h-[92vh] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden">
         {/* Modal Header */}
-        <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/40">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-teal-600/10 text-teal-600 flex items-center justify-center font-bold">
-              <Package className="w-5 h-5" />
+        <div className="p-3.5 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/40 gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-2xl bg-teal-600/10 text-teal-600 flex items-center justify-center font-bold shrink-0">
+              <Package className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-base font-black text-slate-900 dark:text-white tracking-tight">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <h2 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight truncate">
                   ORDER #{order.orderNumber}
                 </h2>
                 <span
-                  className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
+                  className={`text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ${
                     statuses.find((s) => s.value === order.status)?.color || 'bg-slate-100 text-slate-800'
                   }`}
                 >
                   ● {order.status.replace(/_/g, ' ')}
                 </span>
                 {shipping.expressDelivery && (
-                  <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 flex items-center gap-1 shadow-xs">
-                    <Sparkles className="w-3 h-3" /> 15-MIN EXPRESS
+                  <span className="text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 flex items-center gap-1 shadow-xs">
+                    <Sparkles className="w-3 h-3" /> 15-MIN
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Placed on {new Date(order.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+              <p className="text-[11px] text-slate-500 mt-0.5 truncate">
+                Placed on {new Date(order.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               onClick={printPackingSlip}
-              className="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 text-slate-700 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs"
+              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 text-slate-700 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1 shadow-2xs"
+              title="Print Packing Slip"
             >
               <Printer className="w-3.5 h-3.5 text-teal-600" />
-              <span>Packing Slip</span>
+              <span className="hidden sm:inline">Slip</span>
             </button>
 
             {onOpenInvoice && (
               <button
                 onClick={() => onOpenInvoice(order)}
-                className="px-3 py-1.5 rounded-xl bg-teal-50 dark:bg-teal-950/50 border border-teal-200 dark:border-teal-800/80 hover:bg-teal-100 text-teal-700 dark:text-teal-300 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs"
+                className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-teal-50 dark:bg-teal-950/50 border border-teal-200 dark:border-teal-800/80 hover:bg-teal-100 text-teal-700 dark:text-teal-300 text-xs font-bold transition flex items-center gap-1 shadow-2xs"
+                title="View GST Tax Invoice"
               >
                 <FileText className="w-3.5 h-3.5" />
-                <span>GST Tax Invoice</span>
+                <span className="hidden sm:inline">Invoice</span>
               </button>
             )}
 
             <button
               onClick={onClose}
               className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              aria-label="Close"
             >
               <X className="w-5 h-5" />
             </button>

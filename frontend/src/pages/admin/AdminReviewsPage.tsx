@@ -46,14 +46,86 @@ export const AdminReviewsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <AdminHeader
-        title="DOCTOR REVIEWS & CLINICAL RATINGS"
+        title="Doctor Reviews"
         subtitle="Moderate doctor evaluations, verify clinical feedback, and approve high-trust dental ratings"
       />
 
-      <div className="p-6 space-y-4">
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs">
+      <div className="p-3.5 sm:p-6 space-y-4">
+        {/* 1. Mobile Card View (< md) */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="py-12 text-center text-slate-400 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+              <div className="w-8 h-8 border-3 border-teal-500/20 border-t-teal-500 rounded-full animate-spin mx-auto mb-2" />
+              <p className="text-xs font-semibold">Loading reviews...</p>
+            </div>
+          ) : reviews.length === 0 ? (
+            <div className="py-12 text-center text-slate-400 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 px-4">
+              <p className="text-xs font-semibold">No doctor reviews posted yet.</p>
+            </div>
+          ) : (
+            reviews.map((rev) => (
+              <div
+                key={rev.id}
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-3.5 space-y-3 shadow-xs"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h4 className="font-bold text-slate-900 dark:text-white text-xs">
+                      {rev.doctorName}
+                    </h4>
+                    <span className="text-[11px] text-teal-600 block">
+                      {rev.clinicName || 'Smile Dental Clinic'}
+                    </span>
+                  </div>
+
+                  <span
+                    className={`font-bold px-2 py-0.5 rounded-full text-[10px] shrink-0 ${
+                      rev.isApproved
+                        ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                        : 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+                    }`}
+                  >
+                    ● {rev.isApproved ? 'Published' : 'Hidden'}
+                  </span>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700 text-xs space-y-1">
+                  <p className="font-semibold text-slate-800 dark:text-slate-200 truncate">
+                    📦 {rev.product?.name || 'Dental Product'}
+                  </p>
+                  <div className="flex items-center gap-0.5 text-amber-500">
+                    {Array.from({ length: rev.rating }).map((_, i) => (
+                      <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  {rev.title && <p className="font-bold text-slate-900 dark:text-white">{rev.title}</p>}
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400">{rev.comment}</p>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
+                  <button
+                    onClick={() => handleModerate(rev.id, !rev.isApproved)}
+                    className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 text-xs font-bold transition active:scale-95"
+                  >
+                    {rev.isApproved ? 'Hide' : 'Approve'}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(rev.id)}
+                    className="p-1.5 rounded-xl bg-red-50 dark:bg-red-950/60 hover:bg-red-100 text-red-600 transition active:scale-95"
+                    aria-label="Delete review"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* 2. Desktop Full Table View (>= md) */}
+        <div className="hidden md:block bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>

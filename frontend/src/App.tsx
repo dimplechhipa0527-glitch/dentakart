@@ -17,6 +17,8 @@ import { InstantCheckoutModal } from './components/doctor/InstantCheckoutModal';
 import { MobileBottomNav } from './components/common/MobileBottomNav';
 import { MobileSimulatorFrame } from './components/common/MobileSimulatorFrame';
 import { AdminSidebar } from './components/admin/AdminSidebar';
+import { AdminMobileBottomNav } from './components/admin/AdminMobileBottomNav';
+import { AdminUIProvider } from './context/AdminUIContext';
 
 // Doctor Pages
 import { DoctorHomePage } from './pages/doctor/DoctorHomePage';
@@ -65,12 +67,15 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
-      <AdminSidebar />
-      <div className="flex-1 min-w-0 overflow-y-auto">
-        {children}
+    <AdminUIProvider>
+      <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+        <AdminSidebar />
+        <div className="flex-1 min-w-0 flex flex-col min-h-screen pb-16 lg:pb-0 overflow-x-hidden">
+          {children}
+        </div>
+        <AdminMobileBottomNav />
       </div>
-    </div>
+    </AdminUIProvider>
   );
 };
 
