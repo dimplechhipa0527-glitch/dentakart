@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import categoryRoutes from './routes/categoryRoutes';
@@ -15,6 +17,28 @@ import reviewRoutes from './routes/reviewRoutes';
 import notificationRoutes from './routes/notificationRoutes';
 
 dotenv.config();
+
+// Ensure SQLite database exists across all possible working directories
+const possibleDbPaths = [
+  path.resolve(process.cwd(), 'prisma/dev.db'),
+  path.resolve(process.cwd(), 'dev.db'),
+  path.resolve(__dirname, '../prisma/dev.db'),
+  path.resolve(__dirname, '../dev.db'),
+  path.resolve(process.cwd(), 'prisma/prisma/dev.db')
+];
+
+const sourceDb = possibleDbPaths.find(p => fs.existsSync(p));
+if (sourceDb) {
+  possibleDbPaths.forEach(target => {
+    try {
+      const dir = path.dirname(target);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      if (!fs.existsSync(target)) fs.copyFileSync(sourceDb, target);
+    } catch (e) {
+      console.warn('Could not mirror db to:', target);
+    }
+  });
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
