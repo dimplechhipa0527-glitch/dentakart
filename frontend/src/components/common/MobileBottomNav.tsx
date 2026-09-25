@@ -42,28 +42,28 @@ export const MobileBottomNav: React.FC = () => {
         aria-label="Mobile Navigation"
         className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/90 dark:border-slate-800 shadow-[0_-4px_24px_rgba(0,0,0,0.08)] select-none pb-safe"
       >
-        <div className="max-w-md mx-auto px-2 py-1.5 flex items-center justify-around">
+        <div className="max-w-md mx-auto px-1.5 py-1 flex items-center justify-around">
           {/* 1. Home */}
           <NavLink
             to="/"
             end
             className={({ isActive }) =>
-              `flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 ${
+              `flex flex-col items-center justify-center py-0.5 px-2 rounded-lg transition-all duration-150 ${
                 isActive
-                  ? 'text-teal-600 dark:text-teal-400 font-bold scale-105'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900'
+                  ? 'text-teal-600 dark:text-teal-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400'
               }`
             }
           >
             {({ isActive }) => (
               <>
                 <div className="relative">
-                  <Home className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
+                  <Home className={`w-4.5 h-4.5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
                   {isActive && (
-                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-teal-600 dark:bg-teal-400 rounded-full" />
+                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-teal-600 rounded-full" />
                   )}
                 </div>
-                <span className="text-[10px] tracking-tight mt-0.5 font-medium">Home</span>
+                <span className="text-[9px] tracking-tight mt-0.5 font-medium">Home</span>
               </>
             )}
           </NavLink>
@@ -72,35 +72,35 @@ export const MobileBottomNav: React.FC = () => {
           <NavLink
             to="/products"
             className={({ isActive }) =>
-              `flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 ${
+              `flex flex-col items-center justify-center py-0.5 px-2 rounded-lg transition-all duration-150 ${
                 isActive
-                  ? 'text-teal-600 dark:text-teal-400 font-bold scale-105'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900'
+                  ? 'text-teal-600 dark:text-teal-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400'
               }`
             }
           >
             {({ isActive }) => (
               <>
                 <div className="relative">
-                  <Grid className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
+                  <Grid className={`w-4.5 h-4.5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
                   {isActive && (
-                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-teal-600 dark:bg-teal-400 rounded-full" />
+                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-teal-600 rounded-full" />
                   )}
                 </div>
-                <span className="text-[10px] tracking-tight mt-0.5 font-medium">Catalog</span>
+                <span className="text-[9px] tracking-tight mt-0.5 font-medium">Catalog</span>
               </>
             )}
           </NavLink>
 
           {/* 3. Center Action: Scan Rx / DentaAI */}
-          <div className="relative -top-3">
+          <div className="relative -top-2">
             <button
               onClick={() => setShowAiSheet(true)}
-              className="w-12 h-12 rounded-full bg-gradient-to-tr from-teal-600 via-teal-500 to-emerald-400 text-white flex flex-col items-center justify-center shadow-lg shadow-teal-600/30 active:scale-95 transition-transform border-2 border-white dark:border-slate-900"
+              className="w-10 h-10 rounded-full bg-gradient-to-tr from-teal-600 to-emerald-500 text-white flex flex-col items-center justify-center shadow-md shadow-teal-600/25 active:scale-95 transition-transform border border-white dark:border-slate-900"
               title="Scan Rx or Ask DentaAI"
             >
-              <Camera className="w-5 h-5" />
-              <span className="text-[8px] font-black uppercase tracking-tighter">Scan</span>
+              <Camera className="w-4 h-4" />
+              <span className="text-[7px] font-black uppercase">Scan</span>
             </button>
           </div>
 
@@ -108,24 +108,24 @@ export const MobileBottomNav: React.FC = () => {
           <NavLink
             to="/wishlist"
             className={({ isActive }) =>
-              `flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 relative ${
+              `flex flex-col items-center justify-center py-0.5 px-2 rounded-lg transition-all duration-150 relative ${
                 isActive
-                  ? 'text-teal-600 dark:text-teal-400 font-bold scale-105'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900'
+                  ? 'text-teal-600 dark:text-teal-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400'
               }`
             }
           >
             {({ isActive }) => (
               <>
                 <div className="relative">
-                  <Heart className={`w-5 h-5 ${isActive ? 'stroke-[2.5] fill-rose-500 text-rose-500' : 'stroke-2'}`} />
+                  <Heart className={`w-4.5 h-4.5 ${isActive ? 'stroke-[2.5] fill-rose-500 text-rose-500' : 'stroke-2'}`} />
                   {wishlist.length > 0 && (
-                    <span className="absolute -top-1 -right-2 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                    <span className="absolute -top-1 -right-1.5 bg-rose-500 text-white text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center">
                       {wishlist.length}
                     </span>
                   )}
                 </div>
-                <span className="text-[10px] tracking-tight mt-0.5 font-medium">Wishlist</span>
+                <span className="text-[9px] tracking-tight mt-0.5 font-medium">Wishlist</span>
               </>
             )}
           </NavLink>
@@ -133,17 +133,17 @@ export const MobileBottomNav: React.FC = () => {
           {/* 5. Cart Button */}
           <button
             onClick={() => setIsCartOpen(true)}
-            className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-all duration-200 relative"
+            className="flex flex-col items-center justify-center py-0.5 px-2 rounded-lg text-slate-500 dark:text-slate-400 transition-all duration-150 relative"
           >
             <div className="relative">
-              <ShoppingBag className="w-5 h-5 stroke-2" />
+              <ShoppingBag className="w-4.5 h-4.5 stroke-2" />
               {totalCartCount > 0 && (
-                <span className="absolute -top-1 -right-2.5 bg-emerald-600 text-white text-[9px] font-black px-1.5 h-4 min-w-[16px] rounded-full flex items-center justify-center shadow-xs animate-bounce">
+                <span className="absolute -top-1 -right-2 bg-emerald-600 text-white text-[8px] font-black px-1 h-3.5 min-w-[14px] rounded-full flex items-center justify-center shadow-xs">
                   {totalCartCount}
                 </span>
               )}
             </div>
-            <span className="text-[10px] tracking-tight mt-0.5 font-semibold text-emerald-600 dark:text-emerald-400">
+            <span className="text-[9px] tracking-tight mt-0.5 font-semibold text-emerald-600 dark:text-emerald-400">
               {totalCartCount > 0 ? `₹${summary.finalTotal.toLocaleString('en-IN')}` : 'Cart'}
             </span>
           </button>
@@ -152,22 +152,22 @@ export const MobileBottomNav: React.FC = () => {
           <NavLink
             to={isAuthenticated ? '/doctor/dashboard' : '/login'}
             className={({ isActive }) =>
-              `flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 ${
+              `flex flex-col items-center justify-center py-0.5 px-2 rounded-lg transition-all duration-150 ${
                 isActive
-                  ? 'text-teal-600 dark:text-teal-400 font-bold scale-105'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900'
+                  ? 'text-teal-600 dark:text-teal-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400'
               }`
             }
           >
             {({ isActive }) => (
               <>
                 <div className="relative">
-                  <User className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
+                  <User className={`w-4.5 h-4.5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
                   {isAuthenticated && (
-                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-500 rounded-full border border-white dark:border-slate-900" />
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-emerald-500 rounded-full border border-white dark:border-slate-900" />
                   )}
                 </div>
-                <span className="text-[10px] tracking-tight mt-0.5 font-medium">
+                <span className="text-[9px] tracking-tight mt-0.5 font-medium">
                   {isAuthenticated ? 'Clinic' : 'Sign In'}
                 </span>
               </>

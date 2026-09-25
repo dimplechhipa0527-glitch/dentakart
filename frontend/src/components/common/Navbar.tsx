@@ -64,14 +64,14 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-850 shadow-xs">
-        {/* Top Info Bar */}
-        <div className="bg-teal-700 text-white text-[11px] py-1 px-3 sm:px-4 font-medium flex items-center justify-between">
-          <div className="hidden md:flex items-center gap-2">
+        {/* Top Info Bar (Desktop only to save mobile screen height) */}
+        <div className="hidden sm:flex bg-teal-700 text-white text-[11px] py-1 px-4 font-medium items-center justify-between">
+          <div className="flex items-center gap-2">
             <span className="bg-teal-800 text-[10px] font-bold px-2 py-0.5 rounded">INTEGRITY ENTERPRISES</span>
             <span>Silvassa Hub • 100% Genuine Dental Materials with GST ITC Tax Invoicing</span>
           </div>
 
-          <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-3 text-[11px]">
+          <div className="flex items-center justify-end gap-3 text-[11px]">
             <a
               href="https://wa.me/919316839711"
               target="_blank"
@@ -80,7 +80,7 @@ export const Navbar: React.FC = () => {
             >
               <span>💬 WhatsApp: +91 93168 39711</span>
             </a>
-            <span className="hidden sm:inline opacity-60">•</span>
+            <span className="opacity-60">•</span>
             <span className="font-semibold text-teal-100 flex items-center gap-1">
               <span>⚡ 15-20 Min Express Hub</span>
             </span>
@@ -88,7 +88,7 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Main Header Container */}
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-1.5 sm:py-2">
           {/* Top Row: Brand, Location, Actions */}
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             {/* Logo + 15-MIN Tag */}
