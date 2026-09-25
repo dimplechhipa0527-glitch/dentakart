@@ -250,8 +250,14 @@ export const Navbar: React.FC = () => {
               {isAuthenticated ? (
                 <div className="relative">
                   <button
-                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center gap-1.5 p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition"
+                    onClick={() => {
+                      if (window.innerWidth < 640) {
+                        navigate('/profile');
+                      } else {
+                        setIsUserMenuOpen(!isUserMenuOpen);
+                      }
+                    }}
+                    className="flex items-center gap-1.5 p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition cursor-pointer"
                   >
                     <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-teal-600 to-teal-400 text-white font-black flex items-center justify-center text-xs shadow-xs">
                       {user?.name ? user.name.replace('Dr. ', '').charAt(0) : 'D'}
@@ -259,8 +265,9 @@ export const Navbar: React.FC = () => {
                     <ChevronDown className="w-3 h-3 text-slate-400 hidden sm:block" />
                   </button>
 
+                  {/* Desktop Only Dropdown Menu */}
                   {isUserMenuOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="hidden sm:block absolute right-0 top-full mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
                       <div className="p-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 rounded-xl mb-1">
                         <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
                           {user?.name}

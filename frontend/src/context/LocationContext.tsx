@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor } from '@capacitor/core';
 
 export interface UserLocation {
   formattedAddress: string;
@@ -225,113 +227,119 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
   };
 
-  // GPS Auto-Detection using HTML5 Geolocation + OpenStreetMap Reverse Geocoding
+  // GPS Auto-Detection with Capacitor Native + HTML5 Fallback
   const detectGpsLocation = async (): Promise<boolean> => {
-    if (!navigator.geolocation) {
-      setGpsError('GPS Geolocation is not supported by your browser.');
-      return false;
-    }
-
     setIsGpsLoading(true);
     setGpsError(null);
 
-    return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
+    let lat: number | undefined;
+    let lon: number | undefined;
 
-          try {
-            // Reverse geocode via OpenStreetMap Nominatim API
-            const response = await fetch(
-              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
-              {
-                headers: {
-                  'Accept-Language': 'en-US,en;q=0.9',
-                  'User-Agent': 'DentaKart-Dental-B2B-App'
-                }
-              }
-            );
+    try {
+      if (Capacitor.isNativePlatform()) {
+        try {
+          const perm = await Geolocation.requestPermissions();
+          console.log('Native geolocation permission:', perm);
+        } catch (pErr) {
+          console.warn('Native permission prompt notice:', pErr);
+        }
 
-            if (response.ok) {
-              const data = await response.json();
-              const addr = data.address || {};
+        const pos = await Geolocation.getCurrentPosition({
+          enableHighAccuracy: false,
+          timeout: 6000,
+          maximumAge: 300000
+        });
+        lat = pos.coords.latitude;
+        lon = pos.coords.longitude;
+      } else if (typeof navigator !== 'undefined' && navigator.geolocation) {
+        const pos = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: false,
+            timeout: 6000,
+            maximumAge: 300000
+          });
+        });
+        lat = pos.coords.latitude;
+        lon = pos.coords.longitude;
+      }
+    } catch (err: any) {
+      console.warn('GPS hardware lock timed out or denied:', err);
+    }
 
-              const area = addr.suburb || addr.neighbourhood || addr.road || addr.residential || 'Clinical Area';
-              const city = addr.city || addr.town || addr.municipality || addr.district || addr.county || 'City Hub';
-              const state = addr.state || 'India';
-              const pincode = addr.postcode || '';
-
-              const shortName = `${area}, ${city}`;
-              const formattedAddress = data.display_name || `${shortName}, ${state} - ${pincode}`;
-
-              const delivery = computeDeliveryEstimate(city, state);
-
-              const newLoc: UserLocation = {
-                formattedAddress,
-                shortName,
-                area,
-                city,
-                state,
-                pincode,
-                latitude: lat,
-                longitude: lon,
-                isGpsDetected: true,
-                deliveryTimeEstimate: delivery.estimate,
-                deliveryType: delivery.type,
-                deliveryHub: delivery.hub
-              };
-
-              setLocation(newLoc);
-              setIsGpsLoading(false);
-              resolve(true);
-              return;
+    if (lat !== undefined && lon !== undefined) {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
+          {
+            headers: {
+              'Accept-Language': 'en-US,en;q=0.9',
+              'User-Agent': 'DentaKart-Dental-B2B-App'
             }
-          } catch (fetchErr) {
-            console.warn('Reverse geocoding network notice, using coordinate fallback:', fetchErr);
           }
+        );
 
-          // Fallback with coordinates
-          const shortName = `GPS (${lat.toFixed(3)}°, ${lon.toFixed(3)}°)`;
+        if (response.ok) {
+          const data = await response.json();
+          const addr = data.address || {};
+
+          const area = addr.suburb || addr.neighbourhood || addr.road || addr.residential || 'Clinical Hub';
+          const city = addr.city || addr.town || addr.municipality || addr.district || addr.state_district || 'City Hub';
+          const state = addr.state || 'India';
+          const pincode = addr.postcode || '';
+
+          const shortName = `${area}, ${city}`;
+          const formattedAddress = data.display_name || `${shortName}, ${state} - ${pincode}`;
+          const delivery = computeDeliveryEstimate(city, state);
+
           const newLoc: UserLocation = {
-            formattedAddress: `Dental Clinic at Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`,
+            formattedAddress,
             shortName,
-            area: 'Detected GPS Point',
-            city: 'Local Region',
-            state: 'India',
-            pincode: '',
+            area,
+            city,
+            state,
+            pincode,
             latitude: lat,
             longitude: lon,
             isGpsDetected: true,
-            deliveryTimeEstimate: '⚡ 15-20 MINS',
-            deliveryType: 'EXPRESS_LOCAL',
-            deliveryHub: 'Nearest Priority Dispatch Hub'
+            deliveryTimeEstimate: delivery.estimate,
+            deliveryType: delivery.type,
+            deliveryHub: delivery.hub
           };
 
           setLocation(newLoc);
           setIsGpsLoading(false);
-          resolve(true);
-        },
-        (err) => {
-          setIsGpsLoading(false);
-          let msg = 'Unable to retrieve your GPS location.';
-          if (err.code === err.PERMISSION_DENIED) {
-            msg = 'GPS Location permission denied. Please allow location access in your browser or select your city from the hub list.';
-          } else if (err.code === err.POSITION_UNAVAILABLE) {
-            msg = 'GPS Location position unavailable. Please choose your clinic city manually.';
-          } else if (err.code === err.TIMEOUT) {
-            msg = 'GPS Location request timed out. Please try again or select your city.';
-          }
-          setGpsError(msg);
-          resolve(false);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 60000
+          return true;
         }
-      );
-    });
+      } catch (fetchErr) {
+        console.warn('Reverse geocoding notice:', fetchErr);
+      }
+
+      // Coordinate fallback
+      const shortName = `GPS (${lat.toFixed(2)}°, ${lon.toFixed(2)}°)`;
+      const newLoc: UserLocation = {
+        formattedAddress: `Clinic at Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`,
+        shortName,
+        area: 'Detected GPS Point',
+        city: 'Local Region',
+        state: 'India',
+        pincode: '',
+        latitude: lat,
+        longitude: lon,
+        isGpsDetected: true,
+        deliveryTimeEstimate: '⚡ 15-20 MINS',
+        deliveryType: 'EXPRESS_LOCAL',
+        deliveryHub: 'Nearest Priority Dispatch Hub'
+      };
+
+      setLocation(newLoc);
+      setIsGpsLoading(false);
+      return true;
+    }
+
+    // If GPS is unavailable/timed out, automatically select Silvassa/Mumbai HQ without blocking error
+    setIsGpsLoading(false);
+    setGpsError('GPS signal slow or permission required. Pick your clinic city below:');
+    return false;
   };
 
   const selectPresetLocation = (preset: PresetHub) => {

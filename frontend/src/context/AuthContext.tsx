@@ -26,18 +26,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchCurrentUser = async () => {
     try {
       if (!token) {
-        // Auto-login as Dr. Rahul by default for smooth initial exploration
-        await switchDemoUser('DOCTOR_RAHUL');
+        // Clean state for fresh users (empty cart, no pre-filled orders)
+        setUser(null);
+        setLoading(false);
         return;
       }
       const res = await api.get('/auth/me');
       if (res.data.success) {
         setUser(res.data.user);
+      } else {
+        logout();
       }
     } catch (err) {
-      console.error('Fetch me failed', err);
-      // Fallback to demo doctor login
-      await switchDemoUser('DOCTOR_RAHUL');
+      console.warn('User session expired or unauthenticated', err);
+      logout();
     } finally {
       setLoading(false);
     }

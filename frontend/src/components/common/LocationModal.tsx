@@ -128,14 +128,40 @@ export const LocationModal: React.FC = () => {
             </button>
 
             {gpsError && (
-              <div className="p-3 bg-amber-50 dark:bg-amber-950/40 rounded-2xl border border-amber-200 dark:border-amber-800 text-xs text-amber-800 dark:text-amber-300 flex items-start gap-2 animate-in fade-in">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
+              <div className="p-3 bg-teal-50 dark:bg-teal-950/40 rounded-2xl border border-teal-200 dark:border-teal-800 text-xs text-teal-900 dark:text-teal-200 flex items-start gap-2 animate-in fade-in">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-teal-600" />
                 <div>
-                  <p className="font-bold">GPS Permission Notice</p>
+                  <p className="font-bold">Clinic Delivery Hub</p>
                   <p className="text-[11px] opacity-90 mt-0.5">{gpsError}</p>
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Quick Select Express City Chips */}
+          <div className="space-y-1.5">
+            <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
+              ⚡ Quick 1-Tap Express Delivery Hubs
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {PRESET_HUBS.map((hub) => (
+                <button
+                  key={hub.city}
+                  onClick={() => {
+                    selectPresetLocation(hub);
+                    setIsLocationModalOpen(false);
+                  }}
+                  className={`text-xs px-2.5 py-1.5 rounded-xl font-bold transition flex items-center gap-1 cursor-pointer ${
+                    location.city.toLowerCase() === hub.city.toLowerCase()
+                      ? 'bg-teal-600 text-white shadow-xs scale-105 ring-2 ring-teal-400 ring-offset-1'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-teal-50 hover:text-teal-700 dark:hover:bg-slate-700'
+                  }`}
+                >
+                  <span>⚡ {hub.city}</span>
+                  <span className="text-[9px] opacity-75 font-mono">15-20m</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Current Active Location Card */}
