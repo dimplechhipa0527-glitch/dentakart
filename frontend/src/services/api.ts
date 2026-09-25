@@ -5,15 +5,14 @@ const getApiBaseUrl = () => {
     return (import.meta as any).env.VITE_API_URL;
   }
   if (typeof window !== 'undefined' && window.location) {
-    // In web browsers (both localhost and remote/phone LAN IP like 10.50.3.132),
-    // relative /api works seamlessly with Vite's proxy and production deployments
-    if (window.location.protocol.startsWith('http')) {
+    // In local development on desktop browser, use Vite proxy /api
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       return '/api';
     }
-    // In native Capacitor mobile apps, connect to backend host
-    return 'http://10.0.2.2:5000/api';
+    // In production web deployment (Netlify/Vercel) and native Capacitor mobile app
+    return 'https://dentakart-backend.onrender.com/api';
   }
-  return 'http://localhost:5000/api';
+  return 'https://dentakart-backend.onrender.com/api';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
