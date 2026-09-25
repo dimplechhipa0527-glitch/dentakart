@@ -115,7 +115,7 @@ export const AdminProductsPage: React.FC = () => {
                     <img
                       src={prod.images[0] || 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=160&q=80'}
                       alt={prod.name}
-                      className="w-18 h-18 rounded-xl object-contain bg-slate-50 dark:bg-slate-800 p-1.5 border border-slate-200 dark:border-slate-700 shrink-0"
+                      className="w-12 h-12 rounded-xl object-contain bg-slate-50 dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700 shrink-0"
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1 flex-wrap mb-1">

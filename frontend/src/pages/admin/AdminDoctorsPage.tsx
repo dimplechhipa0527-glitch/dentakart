@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Search, ShieldCheck, ShieldAlert, Eye, Ban, Check, MapPin, IndianRupee, Phone, Mail } from 'lucide-react';
+import { Users, User, Search, ShieldCheck, ShieldAlert, Eye, Ban, Check, MapPin, IndianRupee, Phone, Mail } from 'lucide-react';
 import { AdminHeader } from '../../components/admin/AdminHeader';
 import api from '../../services/api';
 
@@ -96,9 +96,9 @@ export const AdminDoctorsPage: React.FC = () => {
                   className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-3.5 space-y-3 shadow-xs"
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 font-bold flex items-center justify-center text-sm border border-teal-200/50 dark:border-teal-800/50 shrink-0">
-                        👨⚕️
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-teal-50 dark:bg-teal-950/60 text-teal-600 font-bold flex items-center justify-center border border-teal-200/50 dark:border-teal-800/50 shrink-0">
+                        <User size={14} className="w-3.5 h-3.5 text-teal-600" />
                       </div>
                       <div className="min-w-0">
                         <h4 className="font-bold text-slate-900 dark:text-white text-xs truncate">
@@ -202,8 +202,8 @@ export const AdminDoctorsPage: React.FC = () => {
                       <tr key={doc.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition">
                         <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
                           <div className="flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-full bg-teal-50 text-teal-700 font-bold flex items-center justify-center text-xs">
-                              👨⚕️
+                            <span className="w-6 h-6 rounded-md bg-teal-50 dark:bg-teal-950/60 text-teal-700 flex items-center justify-center">
+                              <User size={13} className="w-3.5 h-3.5 text-teal-600" />
                             </span>
                             <span>{doc.name}</span>
                           </div>

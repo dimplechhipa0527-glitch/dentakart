@@ -152,9 +152,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const applyCoupon = async (code: string) => {
     setCouponError(null);
+    if (!code || !code.trim()) {
+      setCouponError('Please enter a valid coupon code');
+      return { success: false, message: 'Please enter a coupon code' };
+    }
+    if (summary.subtotal <= 0) {
+      const msg = 'Please add products to your cart before applying a promo coupon';
+      setCouponError(msg);
+      return { success: false, message: msg };
+    }
     try {
       const res = await api.post('/coupons/validate', {
-        code,
+        code: code.trim().toUpperCase(),
         orderAmount: summary.subtotal
       });
       if (res.data.success && res.data.valid) {

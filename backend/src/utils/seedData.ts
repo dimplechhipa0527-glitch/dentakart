@@ -1648,5 +1648,14 @@ export const seedCoupons = [
     minOrderValue: 2000,
     maxDiscount: 2000,
     isActive: true
+  },
+  {
+    code: 'SMILE25',
+    description: 'Flat 25% discount for dental clinics & institutional setups',
+    discountType: 'PERCENTAGE',
+    discountValue: 25,
+    minOrderValue: 250,
+    maxDiscount: 1000,
+    isActive: true
   }
 ];

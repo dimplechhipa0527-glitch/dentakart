@@ -41,10 +41,10 @@ export const AdminMobileBottomNav: React.FC = () => {
             >
               {({ isActive }) => (
                 <>
-                  <div className={`p-1 rounded-xl transition ${isActive ? 'bg-teal-500/10' : ''}`}>
-                    <Icon className="w-5 h-5" />
+                  <div className={`p-0.5 rounded-lg transition ${isActive ? 'bg-teal-500/15' : ''}`}>
+                    <Icon size={17} className="w-4 h-4" />
                   </div>
-                  <span className="text-[10px] mt-0.5 tracking-tight font-medium">
+                  <span className="text-[9px] mt-0.5 tracking-tight font-medium">
                     {item.name}
                   </span>
                 </>
@@ -59,10 +59,10 @@ export const AdminMobileBottomNav: React.FC = () => {
           onClick={toggleMobileSidebar}
           className="flex flex-col items-center justify-center py-1 px-1 rounded-xl text-slate-400 hover:text-slate-200 active:scale-95 transition"
         >
-          <div className="p-1 rounded-xl">
-            <Menu className="w-5 h-5 text-teal-400" />
+          <div className="p-0.5 rounded-lg">
+            <Menu size={17} className="w-4 h-4 text-teal-400" />
           </div>
-          <span className="text-[10px] mt-0.5 tracking-tight font-medium">
+          <span className="text-[9px] mt-0.5 tracking-tight font-medium">
             More
           </span>
         </button>

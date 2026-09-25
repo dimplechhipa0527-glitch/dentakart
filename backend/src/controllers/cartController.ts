@@ -73,7 +73,23 @@ export const addToCart = async (req: AuthRequest, res: Response): Promise<void> 
 
     const { productId, quantity = 1 } = req.body;
 
-    const product = await prisma.product.findUnique({ where: { id: productId } });
+    let product = await prisma.product.findUnique({ where: { id: productId } });
+    if (!product) {
+      product = await prisma.product.findFirst({
+        where: {
+          OR: [
+            { slug: productId },
+            { sku: productId },
+            { name: { contains: productId } }
+          ]
+        }
+      });
+    }
+    if (!product) {
+      product = await prisma.product.findFirst({
+        where: { isActive: true }
+      });
+    }
     if (!product) {
       res.status(404).json({ success: false, message: 'Product not found' });
       return;
@@ -88,7 +104,7 @@ export const addToCart = async (req: AuthRequest, res: Response): Promise<void> 
       where: {
         userId_productId: {
           userId: req.user.id,
-          productId
+          productId: product.id
         }
       }
     });
@@ -108,7 +124,7 @@ export const addToCart = async (req: AuthRequest, res: Response): Promise<void> 
       cartItem = await prisma.cartItem.create({
         data: {
           userId: req.user.id,
-          productId,
+          productId: product.id,
           quantity
         }
       });

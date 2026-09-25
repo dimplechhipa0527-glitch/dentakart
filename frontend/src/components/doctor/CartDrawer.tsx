@@ -177,7 +177,7 @@ export const CartDrawer: React.FC = () => {
                     </div>
                   </div>
                   <button
-                    onClick={() => addToCart('cml...')}
+                    onClick={() => addToCart('karam-nitrile-gloves-100-pcs')}
                     className="text-[11px] font-bold bg-teal-50 hover:bg-teal-600 text-teal-700 hover:text-white px-2.5 py-1 rounded-lg border border-teal-200 transition"
                   >
                     + ADD
@@ -195,7 +195,7 @@ export const CartDrawer: React.FC = () => {
                     </div>
                   </div>
                   <button
-                    onClick={() => addToCart('cml...')}
+                    onClick={() => addToCart('waldent-dental-patient-bibs-500')}
                     className="text-[11px] font-bold bg-teal-50 hover:bg-teal-600 text-teal-700 hover:text-white px-2.5 py-1 rounded-lg border border-teal-200 transition"
                   >
                     + ADD
@@ -269,8 +269,11 @@ export const CartDrawer: React.FC = () => {
                     {quickCoupons.map((code) => (
                       <button
                         key={code}
-                        onClick={() => handleApplyCoupon(code)}
-                        className="text-[10px] font-bold font-mono px-2.5 py-1 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 rounded-lg hover:bg-amber-100"
+                        onClick={() => {
+                          setCouponCodeInput(code);
+                          handleApplyCoupon(code);
+                        }}
+                        className="text-[10px] font-bold font-mono px-2.5 py-1 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 rounded-lg hover:bg-amber-100 transition active:scale-95 cursor-pointer"
                       >
                         🏷️ {code}
                       </button>
