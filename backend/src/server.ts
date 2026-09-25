@@ -71,22 +71,6 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/notifications', notificationRoutes);
 
-// Root Handler
-app.get('/', (req: Request, res: Response) => {
-  res.json({
-    success: true,
-    message: '🦷 DentaKart B2B Dental Marketplace Platform API is Running Live!',
-    status: 'online',
-    endpoints: {
-      health: '/api/health',
-      products: '/api/products',
-      categories: '/api/categories',
-      auth: '/api/auth/login'
-    },
-    timestamp: new Date().toISOString()
-  });
-});
-
 // Health Check
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({
@@ -96,7 +80,24 @@ app.get('/api/health', (req: Request, res: Response) => {
   });
 });
 
-// 404 Handler
+// Serve Frontend Web App
+const clientDistPath = path.resolve(process.cwd(), 'client_dist');
+const altClientDistPath = path.resolve(__dirname, '../client_dist');
+const publicStaticPath = fs.existsSync(clientDistPath) ? clientDistPath : altClientDistPath;
+
+if (fs.existsSync(publicStaticPath)) {
+  app.use(express.static(publicStaticPath));
+
+  // SPA Route Fallback (Serves Storefront, Admin Portal, Doctor Cart, etc.)
+  app.get('*', (req: Request, res: Response, next: NextFunction) => {
+    if (req.url.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(publicStaticPath, 'index.html'));
+  });
+}
+
+// 404 Handler for unmatched API routes
 app.use((req: Request, res: Response) => {
   res.status(404).json({ success: false, message: `API route ${req.url} not found` });
 });
