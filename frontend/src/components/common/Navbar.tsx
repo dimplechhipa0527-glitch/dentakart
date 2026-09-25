@@ -56,14 +56,14 @@ export const Navbar: React.FC = () => {
     { label: '✨ All', path: '/products' },
     { label: '🧴 Composites', path: '/products?category=dental-materials' },
     { label: '⚡ Endodontics', path: '/products?category=endodontics' },
-    { label: '🦷 Scalers', path: '/products?category=dental-instruments' },
+    { label: '🦷 Scalers', path: '/products?category=scalers-tips' },
     { label: '📦 Disposables', path: '/products?category=consumables' },
-    { label: '🩺 Ortho', path: '/products?category=orthodontics' }
+    { label: '🧤 Gloves', path: '/products?category=gloves' }
   ];
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-850 shadow-xs">
+      <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-850 shadow-xs pt-[env(safe-area-inset-top)]">
         {/* Top Info Bar (Desktop only to save mobile screen height) */}
         <div className="hidden sm:flex bg-teal-700 text-white text-[11px] py-1 px-4 font-medium items-center justify-between">
           <div className="flex items-center gap-2">

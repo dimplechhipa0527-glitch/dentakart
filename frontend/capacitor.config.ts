@@ -11,7 +11,8 @@ const config: CapacitorConfig = {
   plugins: {
     StatusBar: {
       style: 'DARK',
-      backgroundColor: '#0f766e'
+      backgroundColor: '#0f766e',
+      overlaysWebView: false
     },
     Geolocation: {
       // High accuracy GPS for dental clinic location resolution

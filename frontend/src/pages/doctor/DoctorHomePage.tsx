@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Sparkles,
@@ -10,24 +10,28 @@ import {
   Layers,
   Clock,
   ChevronRight,
-  CheckCircle2
+  CheckCircle2,
+  RotateCcw
 } from 'lucide-react';
 import api from '../../services/api';
 import { Product, Category } from '../../types';
 import { ProductCard } from '../../components/doctor/ProductCard';
 import { WhatsAppPill } from '../../components/doctor/WhatsAppPill';
 import { useCart } from '../../context/CartContext';
+import { FALLBACK_PRODUCTS } from '../../data/fallbackProducts';
 
 export const DoctorHomePage: React.FC = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const catalogRef = useRef<HTMLElement>(null);
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCatSlug, setSelectedCatSlug] = useState<string>('all');
-  const [flashSaleProducts, setFlashSaleProducts] = useState<Product[]>([]);
-  const [catalogProducts, setCatalogProducts] = useState<Product[]>([]);
+  // Initialize with fallback products immediately so mobile app is NEVER empty or (0)
+  const [catalogProducts, setCatalogProducts] = useState<Product[]>(FALLBACK_PRODUCTS);
+  const [flashSaleProducts, setFlashSaleProducts] = useState<Product[]>(FALLBACK_PRODUCTS.slice(0, 4));
   const [selectedBrandTab, setSelectedBrandTab] = useState<string>('ALL');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Countdown timer for Flash Sale
   const [timeLeft, setTimeLeft] = useState({ hours: 2, minutes: 59, seconds: 30 });
@@ -50,19 +54,19 @@ export const DoctorHomePage: React.FC = () => {
         setLoading(true);
         const [catRes, prodRes] = await Promise.all([
           api.get('/categories'),
-          api.get('/products?limit=50')
+          api.get('/products?limit=60')
         ]);
 
-        if (catRes.data.success) {
+        if (catRes.data?.success && catRes.data.categories?.length > 0) {
           setCategories(catRes.data.categories);
         }
-        if (prodRes.data.success) {
+        if (prodRes.data?.success && prodRes.data.products?.length > 0) {
           const prods: Product[] = prodRes.data.products;
           setCatalogProducts(prods);
           setFlashSaleProducts(prods.slice(0, 4));
         }
       } catch (err) {
-        console.error('Home page fetch error', err);
+        console.warn('Live API fetch error, using robust offline catalog', err);
       } finally {
         setLoading(false);
       }
@@ -151,28 +155,76 @@ export const DoctorHomePage: React.FC = () => {
 
   const brandTabs = ['ALL', '3M ESPE', 'Dentsply', 'Mani', 'GC', 'Hu-Friedy', 'Woodpecker', 'Waldent', 'Karam'];
 
+  const categoryKeywords: Record<string, string[]> = {
+    'dental-materials': ['material', 'composite', 'resin', 'bond', 'cement', 'etch', 'filling', 'matrix', 'alginate', 'impression', 'luting'],
+    'endodontics': ['endo', 'file', 'k-file', 'rotary', 'apex', 'plugger', 'gutta', 'paper point', 'edta', 'calcium', 'canal'],
+    'dental-instruments': ['instrument', 'handpiece', 'airotor', 'scaler', 'bur', 'tray', 'light cure', 'curing'],
+    'scalers-tips': ['scaler', 'tip', 'ultrasonic'],
+    'gloves': ['glove', 'nitrile', 'latex'],
+    'local-anaesthesia': ['lignocaine', 'anaesthesia', 'needle', 'syringe'],
+    'consumables': ['suction', 'cotton', 'syringe', 'needle', 'applicator', 'mixing', 'bib', 'pouch', 'disposable']
+  };
+
+  const categorySlugMap: Record<string, string[]> = {
+    'dental-materials': ['dental-materials', 'composite', 'bonding-agents', 'impression-materials', 'cement', 'etching-materials', 'temporary-filling', 'matrices-wedges'],
+    'endodontics': ['endodontics', 'endo-equipment', 'files', 'gutta-percha-paper-points', 'medicaments-pastes', 'irrigation-needles'],
+    'dental-instruments': ['dental-instruments', 'handpieces', 'scalers-tips', 'burs-trimmers', 'trays', 'light-cure-units'],
+    'scalers-tips': ['scalers-tips'],
+    'gloves': ['gloves'],
+    'local-anaesthesia': ['local-anaesthesia', 'syringes-needles'],
+    'consumables': ['consumables', 'suction-tips', 'cotton-products', 'syringes-needles', 'applicator-tips', 'mixing-pads']
+  };
+
+  // Instant in-place filtering for category and brand
   const filteredCatalog = catalogProducts.filter((prod) => {
-    const matchesBrand = selectedBrandTab === 'ALL' || prod.brand.toLowerCase().includes(selectedBrandTab.toLowerCase());
-    return matchesBrand;
+    if (selectedCatSlug !== 'all') {
+      const allowedSlugs = categorySlugMap[selectedCatSlug] || [selectedCatSlug];
+      const prodCatSlug = prod.category?.slug || prod.categoryId || '';
+      const prodName = (prod.name || '').toLowerCase();
+      const prodDesc = (prod.description || '').toLowerCase();
+      const keywords = categoryKeywords[selectedCatSlug] || [];
+
+      const matchesSlug = allowedSlugs.includes(prodCatSlug);
+      const matchesKeyword = keywords.some((kw) => prodName.includes(kw) || prodDesc.includes(kw));
+
+      if (!matchesSlug && !matchesKeyword) {
+        return false;
+      }
+    }
+
+    if (selectedBrandTab !== 'ALL') {
+      const matchesBrand = (prod.brand || '').toLowerCase().includes(selectedBrandTab.toLowerCase());
+      if (!matchesBrand) return false;
+    }
+
+    return true;
   });
+
+  const handleCategorySelect = (slug: string) => {
+    setSelectedCatSlug(slug);
+    // Smooth scroll directly to the Dental Products & Supplies catalog
+    if (catalogRef.current) {
+      catalogRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20">
-      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 space-y-3.5 pt-2.5">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 space-y-3.5 pt-2">
         
-        {/* 1. Compact Slim Promo Banner ("Little advertisement & small box") */}
+        {/* 1. Compact Slim Promo Banner */}
         <section>
-          <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-teal-950 via-slate-900 to-teal-950 text-white p-3.5 sm:p-5 shadow-sm border border-teal-800/40">
+          <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-teal-950 via-slate-900 to-teal-950 text-white p-3 sm:p-4 shadow-sm border border-teal-800/40">
             <div 
               className="absolute inset-0 opacity-15 mix-blend-luminosity bg-cover bg-center pointer-events-none"
               style={{ backgroundImage: `url('/images/hero-banner.jpg')` }}
             />
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <div className="inline-flex items-center gap-1.5 bg-teal-500/20 text-teal-300 text-[10px] font-bold px-2 py-0.5 rounded-full mb-1">
                   <span>⚡ 15-20 MIN HYPERLOCAL EXPRESS • SILVASSA HUB</span>
                 </div>
-                <h1 className="text-sm sm:text-xl font-black font-display tracking-tight text-white leading-tight">
+                <h1 className="text-sm sm:text-lg font-black font-display tracking-tight text-white leading-tight">
                   Direct B2B Dental Supplies & Clinic Restock
                 </h1>
                 <p className="text-slate-300 text-[11px] max-w-xl hidden sm:block mt-0.5">
@@ -181,50 +233,47 @@ export const DoctorHomePage: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                <Link
-                  to="/products"
-                  className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1"
+                <button
+                  onClick={() => handleCategorySelect('all')}
+                  className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1 cursor-pointer"
                 >
                   <span>All Products</span>
                   <ArrowRight className="w-3 h-3" />
-                </Link>
+                </button>
                 <a
                   href="https://wa.me/919316839711"
                   target="_blank"
                   rel="noreferrer"
                   className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] sm:text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1 shadow-xs"
                 >
-                  <span>💬 WhatsApp Order</span>
+                  <span>💬 WhatsApp</span>
                 </a>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 2. Compact Category Navigation (Blinkit/Amazon style round pills) */}
+        {/* 2. Interactive Category Navigation Pills (Tap filters in-place) */}
         <section>
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 scrollbar-none">
             {categoryPills.map((pill) => {
               const isSelected = selectedCatSlug === pill.slug;
               return (
                 <button
                   key={pill.id}
-                  onClick={() => {
-                    setSelectedCatSlug(pill.slug);
-                    if (pill.slug !== 'all') {
-                      navigate(`/products?category=${pill.slug}`);
-                    }
-                  }}
-                  className="flex flex-col items-center gap-1 shrink-0 w-16 text-center group cursor-pointer"
+                  onClick={() => handleCategorySelect(pill.slug)}
+                  className="flex flex-col items-center gap-1 shrink-0 w-16 text-center group cursor-pointer transition-transform active:scale-95"
                 >
                   <div className={`w-11 h-11 rounded-2xl flex items-center justify-center text-lg shadow-xs transition-all duration-150 ${
                     isSelected
-                      ? 'bg-teal-600 text-white ring-2 ring-teal-400 ring-offset-1 scale-105'
-                      : 'bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-slate-700'
+                      ? 'bg-teal-600 text-white ring-2 ring-teal-400 ring-offset-2 scale-105 shadow-md shadow-teal-500/30'
+                      : 'bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-slate-700 hover:border-teal-400'
                   }`}>
                     {pill.icon}
                   </div>
-                  <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 truncate w-full">
+                  <span className={`text-[10px] truncate w-full ${
+                    isSelected ? 'font-black text-teal-700 dark:text-teal-300' : 'font-semibold text-slate-700 dark:text-slate-300'
+                  }`}>
                     {pill.name}
                   </span>
                 </button>
@@ -233,30 +282,53 @@ export const DoctorHomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* 3. ⭐ PRIMARY DENTAL PRODUCTS CATALOG (Moved Directly Up for High Visibility) */}
-        <section>
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-1.5">
+        {/* 3. ⭐ PRIMARY DENTAL PRODUCTS CATALOG */}
+        <section ref={catalogRef} className="scroll-mt-24 space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-base">🦷</span>
               <h2 className="text-sm sm:text-base font-black text-slate-900 dark:text-white font-display">
                 Dental Products & Supplies ({filteredCatalog.length})
               </h2>
+
+              {selectedCatSlug !== 'all' && (
+                <span className="inline-flex items-center gap-1 bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  <span>{categoryPills.find(p => p.slug === selectedCatSlug)?.name}</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedCatSlug('all');
+                    }}
+                    className="text-xs hover:text-rose-600 font-black ml-0.5 leading-none cursor-pointer"
+                    title="Remove filter"
+                  >
+                    ✕
+                  </button>
+                </span>
+              )}
             </div>
-            <Link to="/products" className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:underline">
-              View All →
-            </Link>
+
+            <button
+              onClick={() => {
+                setSelectedCatSlug('all');
+                setSelectedBrandTab('ALL');
+              }}
+              className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:underline cursor-pointer"
+            >
+              Reset All
+            </button>
           </div>
 
           {/* Quick Brand Filter Chips */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-2 scrollbar-none text-[11px]">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 scrollbar-none text-[11px]">
             {brandTabs.map((brand) => (
               <button
                 key={brand}
                 onClick={() => setSelectedBrandTab(brand)}
-                className={`text-[10px] sm:text-xs px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
+                className={`text-[10px] sm:text-xs px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap cursor-pointer ${
                   selectedBrandTab === brand
                     ? 'bg-teal-600 text-white shadow-xs'
-                    : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300'
+                    : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:border-slate-300'
                 }`}
               >
                 {brand}
@@ -265,11 +337,27 @@ export const DoctorHomePage: React.FC = () => {
           </div>
 
           {/* High-Density 2-Column Mobile Products Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3.5">
-            {filteredCatalog.map((prod) => (
-              <ProductCard key={prod.id} product={prod} />
-            ))}
-          </div>
+          {filteredCatalog.length === 0 ? (
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 text-center space-y-2">
+              <p className="text-xs text-slate-500 font-medium">No dental supplies match the selected brand & category filter.</p>
+              <button
+                onClick={() => {
+                  setSelectedCatSlug('all');
+                  setSelectedBrandTab('ALL');
+                }}
+                className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition shadow-xs inline-flex items-center gap-1"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Show All 52 Products</span>
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3.5">
+              {filteredCatalog.map((prod) => (
+                <ProductCard key={prod.id} product={prod} />
+              ))}
+            </div>
+          )}
         </section>
 
         {/* 4. Compact FLASH SALE Deals */}
@@ -299,8 +387,8 @@ export const DoctorHomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* 5. Curated Dental Kits (Horizontal Swipeable Carousel - Won't take full screen height) */}
-        <section className="pt-2">
+        {/* 5. Curated Dental Kits (Horizontal Swipeable Carousel) */}
+        <section className="pt-1">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5">
               <span className="text-sm">📦</span>
@@ -308,9 +396,12 @@ export const DoctorHomePage: React.FC = () => {
                 Curated Dental Kits & Combos
               </h2>
             </div>
-            <Link to="/products" className="text-[11px] font-bold text-teal-600 hover:underline">
+            <button
+              onClick={() => handleCategorySelect('all')}
+              className="text-[11px] font-bold text-teal-600 hover:underline cursor-pointer"
+            >
               All Kits →
-            </Link>
+            </button>
           </div>
 
           <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none snap-x">
@@ -326,7 +417,7 @@ export const DoctorHomePage: React.FC = () => {
                     </span>
                     <span className="text-[9px] text-emerald-600 font-bold">{kit.savings}</span>
                   </div>
-                  <div className="w-full h-24 rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800 mb-2 p-1">
+                  <div className="w-full h-24 rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800 mb-2 p-1 flex items-center justify-center">
                     <img
                       src={kit.image}
                       alt={kit.title}
@@ -362,7 +453,7 @@ export const DoctorHomePage: React.FC = () => {
                     </div>
                   </div>
                   <button
-                    onClick={() => addToCart('1', 1)}
+                    onClick={() => addToCart(kit.id, 1)}
                     className="bg-teal-600 hover:bg-teal-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg transition"
                   >
                     Add Kit
