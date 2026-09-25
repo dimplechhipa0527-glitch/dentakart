@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+frontend/dist/
+backend/dist/
+dist/
+
+# Android build outputs & caches (Release builds are safely kept in RELEASE_BUILDS/)
+frontend/android/app/build/
+frontend/android/.gradle/
+frontend/android/build/
+frontend/android/local.properties
+*.keystore
+
+# Logs & temp files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.system_generated/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment files
+# Keep .env if needed for defaults, but ignore sensitive local secrets if specified
