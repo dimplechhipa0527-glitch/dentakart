@@ -36,7 +36,7 @@ export const AdminSidebar: React.FC = () => {
     <div className="flex flex-col justify-between h-full overflow-y-auto">
       <div>
         {/* Brand Header */}
-        <div className="p-4 sm:p-4.5 border-b border-slate-800 flex items-center justify-between">
+        <div className="px-4 pb-3.5 pt-[max(env(safe-area-inset-top,0px),3rem)] xl:pt-4 border-b border-slate-800 flex items-center justify-between">
           <Link
             to="/admin/dashboard"
             onClick={closeMobileSidebar}

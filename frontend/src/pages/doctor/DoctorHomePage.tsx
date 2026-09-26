@@ -221,7 +221,7 @@ export const DoctorHomePage: React.FC = () => {
             <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <div className="inline-flex items-center gap-1.5 bg-teal-500/20 text-teal-300 text-[10px] font-bold px-2 py-0.5 rounded-full mb-1">
-                  <span>⚡ 15-20 MIN HYPERLOCAL EXPRESS • SILVASSA HUB</span>
+                  <span>⚡ PRIORITY CLINIC DISPATCH • SILVASSA HUB</span>
                 </div>
                 <h1 className="text-sm sm:text-lg font-black font-display tracking-tight text-white leading-tight">
                   Direct B2B Dental Supplies & Clinic Restock

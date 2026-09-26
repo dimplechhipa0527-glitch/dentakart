@@ -76,10 +76,10 @@ export const ProductCard: React.FC<Props> = ({ product, compact = false }) => {
           />
         </div>
 
-        {/* 15-MIN Delivery Badge */}
+        {/* Express Delivery Badge */}
         <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-slate-500 mb-1">
           <span className="text-teal-700 dark:text-teal-400 flex items-center gap-0.5 bg-teal-50 dark:bg-teal-950/60 px-1.5 py-0.5 rounded">
-            <Zap className="w-2.5 h-2.5 text-teal-600 fill-teal-600" /> 15m
+            <Zap className="w-2.5 h-2.5 text-teal-600 fill-teal-600" /> Express
           </span>
           <span className="flex items-center gap-0.5 text-amber-500">
             <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />

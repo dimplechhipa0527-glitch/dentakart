@@ -81,7 +81,7 @@ export const DoctorDashboardPage: React.FC = () => {
           <p className="text-xs text-slate-300">
             {isAuthenticated
               ? `${user?.doctorProfile?.clinicName || 'Dental Clinic'} • Silvassa Express Hub`
-              : 'Direct B2B Procurement with 15-20 Min Express Clinic Restock'}
+              : 'Direct B2B Procurement with Priority Express Clinic Restock'}
           </p>
         </div>
 

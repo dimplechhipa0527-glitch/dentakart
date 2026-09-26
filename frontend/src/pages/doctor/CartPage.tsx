@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingBag, Trash2, Plus, Minus, ArrowRight, Tag, Zap, ShieldCheck, MapPin, Navigation } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingBag, Trash2, Plus, Minus, ArrowRight, Tag, Zap, ShieldCheck, MapPin, Navigation, ArrowLeft } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useLocationContext } from '../../context/LocationContext';
 import { InstantCheckoutModal } from '../../components/doctor/InstantCheckoutModal';
 
 export const CartPage: React.FC = () => {
+  const navigate = useNavigate();
   const {
     items,
     summary,
@@ -34,14 +35,23 @@ export const CartPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <div className="pb-4 border-b border-slate-200 dark:border-slate-800">
-        <h1 className="text-2xl font-black text-slate-900 dark:text-white font-display">
-          Clinic Shopping Cart ({items.length} Items)
-        </h1>
-        <p className="text-xs text-slate-500 mt-0.5">
-          Review quantities, apply promo vouchers, and calculate GST input tax credit
-        </p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <div className="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 -ml-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 transition shadow-xs cursor-pointer"
+          title="Go Back"
+        >
+          <ArrowLeft className="w-5 h-5 text-teal-600" />
+        </button>
+        <div>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-display">
+            Clinic Shopping Cart ({items.length} Items)
+          </h1>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Review quantities, apply promo vouchers, and calculate GST input tax credit
+          </p>
+        </div>
       </div>
 
       {items.length === 0 ? (

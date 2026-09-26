@@ -169,7 +169,7 @@ export const MobileSimulatorFrame: React.FC<Props> = ({ children }) => {
             <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center pointer-events-none">
               <div className="bg-black text-white px-3.5 py-1 rounded-full flex items-center gap-2 shadow-lg border border-white/5">
                 <span className="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-700" />
-                <span className="text-[10px] font-bold text-teal-400 tracking-wider">⚡ 15-MIN</span>
+                <span className="text-[10px] font-bold text-teal-400 tracking-wider">⚡ EXPRESS</span>
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
             </div>

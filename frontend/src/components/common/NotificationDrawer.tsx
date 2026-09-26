@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Bell, CheckCheck, Package, Tag, AlertTriangle, ExternalLink } from 'lucide-react';
+import { X, Bell, CheckCheck, Package, Tag, AlertTriangle, ExternalLink, ArrowLeft } from 'lucide-react';
 import { useNotification } from '../../context/NotificationContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,9 +26,19 @@ export const NotificationDrawer: React.FC = () => {
     <div className="fixed inset-0 z-50 overflow-hidden bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div className="absolute inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
         <div className="w-screen max-w-sm bg-white dark:bg-slate-900 shadow-2xl flex flex-col border-l border-slate-200 dark:border-slate-800">
-          {/* Header */}
-          <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          {/* Header with Android/iOS safe area clearance */}
+          <div
+            className="px-4 pb-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0 bg-white dark:bg-slate-900"
+            style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 48px)' }}
+          >
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1 -ml-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                title="Go Back"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
               <Bell className="w-5 h-5 text-teal-600" />
               <h2 className="text-sm font-bold text-slate-900 dark:text-white">Doctor Notifications</h2>
               {unreadCount > 0 && (
@@ -48,7 +58,8 @@ export const NotificationDrawer: React.FC = () => {
               )}
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 text-slate-400 hover:text-slate-600 rounded-lg"
+                className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                title="Close"
               >
                 <X className="w-5 h-5" />
               </button>

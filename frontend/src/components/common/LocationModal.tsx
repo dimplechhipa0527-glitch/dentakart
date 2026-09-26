@@ -120,7 +120,7 @@ export const LocationModal: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-xs text-teal-100 mt-0.5">
-                    Automatically locates your clinic & enables 15-minute emergency dispatch
+                    Automatically locates your clinic & connects to your nearest dispatch hub
                   </p>
                 </div>
               </div>
@@ -151,14 +151,13 @@ export const LocationModal: React.FC = () => {
                     selectPresetLocation(hub);
                     setIsLocationModalOpen(false);
                   }}
-                  className={`text-xs px-2.5 py-1.5 rounded-xl font-bold transition flex items-center gap-1 cursor-pointer ${
+                  className={`text-xs px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
                     location.city.toLowerCase() === hub.city.toLowerCase()
                       ? 'bg-teal-600 text-white shadow-xs scale-105 ring-2 ring-teal-400 ring-offset-1'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-teal-50 hover:text-teal-700 dark:hover:bg-slate-700'
                   }`}
                 >
                   <span>⚡ {hub.city}</span>
-                  <span className="text-[9px] opacity-75 font-mono">15-20m</span>
                 </button>
               ))}
             </div>

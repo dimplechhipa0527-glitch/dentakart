@@ -19,6 +19,7 @@ import { MobileSimulatorFrame } from './components/common/MobileSimulatorFrame';
 import { AdminSidebar } from './components/admin/AdminSidebar';
 import { AdminMobileBottomNav } from './components/admin/AdminMobileBottomNav';
 import { AdminUIProvider } from './context/AdminUIContext';
+import { HardwareBackButtonHandler } from './components/common/HardwareBackButtonHandler';
 
 // Doctor Pages
 import { DoctorHomePage } from './pages/doctor/DoctorHomePage';
@@ -67,15 +68,13 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }
 
   return (
-    <AdminUIProvider>
-      <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
-        <AdminSidebar />
-        <div className="flex-1 min-w-0 flex flex-col min-h-screen pb-16 xl:pb-0 overflow-x-hidden">
-          {children}
-        </div>
-        <AdminMobileBottomNav />
+    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+      <AdminSidebar />
+      <div className="flex-1 min-w-0 flex flex-col min-h-screen pb-16 xl:pb-0 overflow-x-hidden">
+        {children}
       </div>
-    </AdminUIProvider>
+      <AdminMobileBottomNav />
+    </div>
   );
 };
 
@@ -102,6 +101,7 @@ const DoctorLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 export const AppContent: React.FC = () => {
   return (
     <MobileSimulatorFrame>
+      <HardwareBackButtonHandler />
       <Routes>
         {/* Customer & Doctor Auth */}
         <Route path="/login" element={<LoginPage />} />
@@ -149,7 +149,9 @@ export const App: React.FC = () => {
             <WishlistProvider>
               <NotificationProvider>
                 <ViewModeProvider>
-                  <AppContent />
+                  <AdminUIProvider>
+                    <AppContent />
+                  </AdminUIProvider>
                 </ViewModeProvider>
               </NotificationProvider>
             </WishlistProvider>

@@ -14,7 +14,7 @@ export const AdminHeader: React.FC<Props> = ({ title, subtitle, actionButton }) 
   const { toggleMobileSidebar } = useAdminUI();
 
   return (
-    <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-3.5 py-2.5 sm:px-6 sm:py-3.5 sticky top-0 z-30 shadow-xs">
+    <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-3.5 pb-2.5 pt-[max(env(safe-area-inset-top,0px),3rem)] sm:pt-3.5 sm:pb-3.5 sm:px-6 sticky top-0 z-30 shadow-xs">
       <div className="flex items-center justify-between gap-3">
         {/* Left: Mobile Menu Toggle + Titles */}
         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">

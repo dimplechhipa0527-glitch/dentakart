@@ -82,7 +82,7 @@ export const Navbar: React.FC = () => {
             </a>
             <span className="opacity-60">•</span>
             <span className="font-semibold text-teal-100 flex items-center gap-1">
-              <span>⚡ 15-20 Min Express Hub</span>
+              <span>⚡ Fast Express Dispatch</span>
             </span>
           </div>
         </div>
@@ -91,7 +91,7 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-1.5 sm:py-2">
           {/* Top Row: Brand, Location, Actions */}
           <div className="flex items-center justify-between gap-2 sm:gap-4">
-            {/* Logo + 15-MIN Tag */}
+            {/* Logo + Tag */}
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               <Link to="/" className="flex items-center gap-2 group">
                 <img
@@ -111,8 +111,8 @@ export const Navbar: React.FC = () => {
                       B2B
                     </span>
                   </div>
-                  <div className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-amber-500 tracking-wider">
-                    <span>⚡ 15-MIN EXPRESS</span>
+                  <div className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-teal-600 dark:text-teal-400 tracking-wider">
+                    <span>⚡ EXPRESS DELIVERY</span>
                   </div>
                 </div>
               </Link>
@@ -126,11 +126,11 @@ export const Navbar: React.FC = () => {
                 title="Click to detect GPS or change clinic delivery location"
               >
                 <span
-                  className={`text-white text-[9px] px-1 py-0.2 rounded-full font-bold flex items-center shrink-0 ${
+                  className={`text-white text-[9px] px-1.5 py-0.2 rounded-full font-bold flex items-center shrink-0 ${
                     location.deliveryType === 'EXPRESS_LOCAL' ? 'bg-teal-600' : 'bg-indigo-600'
                   }`}
                 >
-                  {location.deliveryType === 'EXPRESS_LOCAL' ? '15m' : 'Air'}
+                  {location.deliveryType === 'EXPRESS_LOCAL' ? 'Express' : 'Air'}
                 </span>
                 <MapPin className="w-3 h-3 text-teal-600 shrink-0" />
                 <span className="truncate text-[10px] sm:text-xs font-medium">{location.city || location.shortName}</span>

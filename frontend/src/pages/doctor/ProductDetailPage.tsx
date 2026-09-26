@@ -13,7 +13,8 @@ import {
   FileText,
   Building,
   Award,
-  Share2
+  Share2,
+  ArrowLeft
 } from 'lucide-react';
 import api from '../../services/api';
 import { Product } from '../../types';
@@ -70,8 +71,9 @@ export const ProductDetailPage: React.FC = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center space-y-4">
         <h2 className="text-xl font-bold text-slate-800">Product Not Found</h2>
-        <button onClick={() => navigate('/products')} className="text-teal-600 font-bold text-xs hover:underline">
-          Return to Product Catalog
+        <button onClick={() => navigate('/products')} className="text-teal-600 font-bold text-xs hover:underline flex items-center gap-1.5 mx-auto">
+          <ArrowLeft className="w-4 h-4" />
+          <span>Return to Product Catalog</span>
         </button>
       </div>
     );
@@ -90,7 +92,18 @@ export const ProductDetailPage: React.FC = () => {
   const images = Array.isArray(product.images) ? product.images : [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      {/* Top Back Navigation Bar */}
+      <div>
+        <button
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-300 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-xs transition cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4 text-teal-600" />
+          <span>Back to Products</span>
+        </button>
+      </div>
+
       {/* Product Hero */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Image Gallery */}
@@ -168,7 +181,7 @@ export const ProductDetailPage: React.FC = () => {
 
               <div className="flex items-center gap-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 px-3 py-1 rounded-xl text-xs font-bold border border-teal-200 dark:border-teal-800">
                 <Zap className="w-3.5 h-3.5 text-teal-600 fill-teal-600" />
-                <span>⚡ 15-Min Delivery Available</span>
+                <span>⚡ Express Delivery Available</span>
               </div>
             </div>
           </div>

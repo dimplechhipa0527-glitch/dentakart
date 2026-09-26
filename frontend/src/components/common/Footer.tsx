@@ -23,7 +23,7 @@ export const Footer: React.FC = () => {
               <Truck className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white">⚡ 15-Min Delivery</h4>
+              <h4 className="text-xs font-bold text-white">⚡ Express Delivery</h4>
               <p className="text-[11px] text-slate-400">Hyperlocal micro-hubs in metro clinics</p>
             </div>
           </div>
@@ -108,7 +108,7 @@ export const Footer: React.FC = () => {
             </li>
             <li><span className="text-slate-400 block">📞 Direct: +91 93168 39711</span></li>
             <li><span className="text-slate-400 block">Mon - Sat: 8 AM - 10 PM</span></li>
-            <li><span className="text-emerald-400 text-[11px] font-semibold block">⚡ 15-20 Min Silvassa Express</span></li>
+            <li><span className="text-emerald-400 text-[11px] font-semibold block">⚡ Silvassa Express Hub</span></li>
           </ul>
         </div>
       </div>

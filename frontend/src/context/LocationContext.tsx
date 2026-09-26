@@ -36,7 +36,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Dadra & Nagar Haveli',
     pincode: '396230',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 15-20 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Silvassa Express Hub'
   },
   {
@@ -46,7 +46,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Maharashtra',
     pincode: '400053',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 15-20 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Mumbai Central Metro Hub'
   },
   {
@@ -56,7 +56,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Gujarat',
     pincode: '380015',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 18-22 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Ahmedabad West Hub'
   },
   {
@@ -66,7 +66,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Gujarat',
     pincode: '395007',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 15-25 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Surat South Hub'
   },
   {
@@ -76,7 +76,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Maharashtra',
     pincode: '411038',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 20-25 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Pune Express Hub'
   },
   {
@@ -86,7 +86,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Delhi',
     pincode: '110016',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 18-25 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Delhi North Hub'
   },
   {
@@ -96,7 +96,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Karnataka',
     pincode: '560034',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 20-30 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Bengaluru Central Hub'
   },
   {
@@ -106,7 +106,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Telangana',
     pincode: '500034',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 20-30 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Hyderabad West Hub'
   },
   {
@@ -116,7 +116,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Tamil Nadu',
     pincode: '600040',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 20-30 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Chennai South Hub'
   },
   {
@@ -126,7 +126,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'West Bengal',
     pincode: '700091',
     type: 'EXPRESS_LOCAL',
-    deliveryTime: '⚡ 25-35 MINS',
+    deliveryTime: '⚡ EXPRESS DELIVERY',
     hub: 'Kolkata East Hub'
   },
   {
@@ -136,7 +136,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Rajasthan',
     pincode: '302017',
     type: 'PAN_INDIA_AIR',
-    deliveryTime: '🚀 24-48 HRS AIR',
+    deliveryTime: '🚀 AIR CARGO',
     hub: 'National Blue Dart Air Hub'
   },
   {
@@ -146,7 +146,7 @@ export const PRESET_HUBS: PresetHub[] = [
     state: 'Madhya Pradesh',
     pincode: '452010',
     type: 'PAN_INDIA_AIR',
-    deliveryTime: '🚀 24-48 HRS AIR',
+    deliveryTime: '🚀 AIR CARGO',
     hub: 'National Express Cargo Hub'
   }
 ];
@@ -159,7 +159,7 @@ const DEFAULT_LOCATION: UserLocation = {
   state: 'Dadra & Nagar Haveli',
   pincode: '396230',
   isGpsDetected: false,
-  deliveryTimeEstimate: '⚡ 15-20 MINS',
+  deliveryTimeEstimate: '⚡ EXPRESS DELIVERY',
   deliveryType: 'EXPRESS_LOCAL',
   deliveryHub: 'Silvassa Central Hub'
 };
@@ -214,14 +214,14 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     if (isLocalExpress) {
       return {
-        estimate: '⚡ 15-20 MINS',
+        estimate: '⚡ EXPRESS DELIVERY',
         type: 'EXPRESS_LOCAL',
-        hub: `${city} Hyper-Local Express Depot`
+        hub: `${city} Priority Express Depot`
       };
     }
 
     return {
-      estimate: '🚀 24-48 HRS AIR',
+      estimate: '🚀 AIR CARGO',
       type: 'PAN_INDIA_AIR',
       hub: 'Blue Dart / Delhivery Express Air Cargo'
     };

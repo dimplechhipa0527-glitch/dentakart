@@ -15,7 +15,7 @@ interface CartContextType {
   setIsCartOpen: (open: boolean) => void;
   setIsCheckoutOpen: (open: boolean) => void;
   setDeliveryInstruction: (inst: string) => void;
-  addToCart: (productId: string, quantity?: number) => Promise<void>;
+  addToCart: (productId: string, quantity?: number, openDrawer?: boolean) => Promise<void>;
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   removeFromCart: (itemId: string) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -83,7 +83,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       totalGst += lineGst;
     });
 
-    // 15-min Express Lightning Delivery is FREE for all clinic orders
+    // Express Delivery is FREE for all clinic orders
     const shipping = 0;
     let discount = 0;
 
@@ -118,7 +118,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 2800);
   };
 
-  const addToCart = async (productId: string, quantity = 1) => {
+  const addToCart = async (productId: string, quantity = 1, openDrawer = false) => {
     try {
       // If customer is not authenticated yet, automatically connect as demo doctor Dr. Rahul for smooth testing
       if (!isAuthenticated && !localStorage.getItem('dentakart_token')) {
@@ -128,7 +128,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const res = await api.post('/cart/add', { productId, quantity });
       if (res.data.success) {
         await fetchCart();
-        setIsCartOpen(true);
+        if (openDrawer) {
+          setIsCartOpen(true);
+        }
         showToast('Added to clinic cart');
       }
     } catch (err: any) {
@@ -138,7 +140,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } else {
         // Fallback: fetch cart anyway in case item was recorded or refresh
         await fetchCart();
-        setIsCartOpen(true);
+        if (openDrawer) {
+          setIsCartOpen(true);
+        }
       }
     }
   };

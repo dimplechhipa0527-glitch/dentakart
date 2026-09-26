@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { Product, Category } from '../../types';
 import { ProductCard } from '../../components/doctor/ProductCard';
 import { FilterSidebar } from '../../components/doctor/FilterSidebar';
-import { Search, SlidersHorizontal, Grid, List, RotateCcw } from 'lucide-react';
+import { Search, SlidersHorizontal, Grid, List, RotateCcw, ArrowLeft } from 'lucide-react';
 import { FALLBACK_PRODUCTS } from '../../data/fallbackProducts';
 
 export const ProductListingPage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category') || '';
   const searchParam = searchParams.get('search') || '';
@@ -138,13 +139,22 @@ export const ProductListingPage: React.FC = () => {
     <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-4 sm:py-8 pb-20">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
-        <div>
-          <h1 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-display">
-            {categoryParam ? `Category: ${categoryParam.replace(/-/g, ' ')}` : searchParam ? `Search: "${searchParam}"` : 'Dental Products Catalog'}
-          </h1>
-          <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
-            Showing {products.length} surgical & restorative dental items available for B2B ordering
-          </p>
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={() => navigate(-1)}
+            className="p-2 -ml-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 transition shadow-xs cursor-pointer"
+            title="Go Back"
+          >
+            <ArrowLeft className="w-4 h-4 text-teal-600" />
+          </button>
+          <div>
+            <h1 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-display">
+              {categoryParam ? `Category: ${categoryParam.replace(/-/g, ' ')}` : searchParam ? `Search: "${searchParam}"` : 'Dental Products Catalog'}
+            </h1>
+            <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
+              Showing {products.length} surgical & restorative dental items available for B2B ordering
+            </p>
+          </div>
         </div>
 
         {/* Action Controls & Sort */}
