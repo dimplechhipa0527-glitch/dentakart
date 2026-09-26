@@ -88,6 +88,77 @@ async function main() {
     }
   });
   console.log('Upserted product:', gloves.name, gloves.slug);
+
+  const kits = [
+    {
+      id: 'kit-1',
+      name: 'Endodontic Root Canal Master Restock Kit',
+      slug: 'kit-1',
+      price: 5290,
+      mrp: 6800,
+      stock: 50,
+      images: JSON.stringify(['/images/products/endo-plug-niti.jpg'])
+    },
+    {
+      id: 'kit-2',
+      name: 'Ready-to-Office Composite Resin & Bleaching Kit',
+      slug: 'kit-2',
+      price: 6490,
+      mrp: 8100,
+      stock: 50,
+      images: JSON.stringify(['/images/products/healix-x3-light-cure.jpg'])
+    },
+    {
+      id: 'kit-3',
+      name: 'Daily Clinic Hygiene & Disposables Megapack',
+      slug: 'kit-3',
+      price: 3690,
+      mrp: 4650,
+      stock: 50,
+      images: JSON.stringify(['/images/products/true-endo-nitrile-gloves.jpg'])
+    },
+    {
+      id: 'kit-4',
+      name: 'Complete Orthodontics & Whitening Setup',
+      slug: 'kit-4',
+      price: 8990,
+      mrp: 11500,
+      stock: 50,
+      images: JSON.stringify(['/images/products/healix-in-office-bleaching-kit.jpg'])
+    }
+  ];
+
+  for (const k of kits) {
+    await prisma.product.upsert({
+      where: { id: k.id },
+      update: {
+        name: k.name,
+        price: k.price,
+        mrp: k.mrp,
+        stock: k.stock,
+        isActive: true
+      },
+      create: {
+        id: k.id,
+        name: k.name,
+        slug: k.slug,
+        description: 'B2B Clinic Curated Restock Kit',
+        brand: 'DentaKart Curated',
+        sku: k.id.toUpperCase(),
+        price: k.price,
+        mrp: k.mrp,
+        stock: k.stock,
+        images: k.images,
+        categoryId: cat ? cat.id : 'cmtwf489f00042upk8o79e5z5',
+        hsnCode: '9018',
+        gstPercent: 12,
+        packSize: 'Complete Kit Bundle',
+        specifications: '{}',
+        isActive: true
+      }
+    });
+    console.log('Upserted kit:', k.id, k.name);
+  }
 }
 
 main().catch(console.error).finally(() => prisma.$disconnect());

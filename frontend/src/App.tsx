@@ -70,7 +70,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <AdminUIProvider>
       <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
         <AdminSidebar />
-        <div className="flex-1 min-w-0 flex flex-col min-h-screen pb-16 lg:pb-0 overflow-x-hidden">
+        <div className="flex-1 min-w-0 flex flex-col min-h-screen pb-16 xl:pb-0 overflow-x-hidden">
           {children}
         </div>
         <AdminMobileBottomNav />

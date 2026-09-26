@@ -22,7 +22,7 @@ export const AdminMobileBottomNav: React.FC = () => {
   return (
     <nav
       aria-label="Admin Mobile Navigation"
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800 text-slate-400 select-none pb-safe shadow-[0_-4px_24px_rgba(0,0,0,0.4)]"
+      className="xl:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800 text-slate-400 select-none pb-safe shadow-[0_-4px_24px_rgba(0,0,0,0.4)]"
     >
       <div className="grid grid-cols-5 items-center px-1 py-1">
         {navItems.map((item) => {

@@ -41,12 +41,12 @@ export const CartDrawer: React.FC = () => {
       <div className="absolute inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
         <div className="w-screen max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col border-l border-slate-200 dark:border-slate-800">
           {/* Header */}
-          <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div className="pt-8 sm:pt-4.5 pb-3.5 px-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-5 h-5 text-teal-600" />
               <h2 className="text-base font-bold text-slate-900 dark:text-white">My Dental Cart</h2>
               <span className="text-xs bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 font-bold px-2 py-0.5 rounded-full">
-                {items.length} items
+                {items.length} {items.length === 1 ? 'item' : 'items'}
               </span>
             </div>
 
@@ -68,7 +68,7 @@ export const CartDrawer: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsCartOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg"
+                className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -76,7 +76,7 @@ export const CartDrawer: React.FC = () => {
           </div>
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 pb-28 space-y-4">
             {/* Lightning Delivery Banner */}
             <div className="p-3.5 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/40 dark:to-teal-950/40 rounded-2xl border border-emerald-200/80 dark:border-emerald-800/80 space-y-2">
               <div className="flex items-center justify-between text-xs font-bold text-emerald-800 dark:text-emerald-300">

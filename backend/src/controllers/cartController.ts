@@ -44,7 +44,8 @@ export const getCart = async (req: AuthRequest, res: Response): Promise<void> =>
       };
     });
 
-    const shipping = subtotal >= 5000 || subtotal === 0 ? 0 : 100;
+    // Promotional 15-min Lightning Delivery is 100% FREE for verified clinic accounts
+    const shipping = 0;
     const finalTotal = subtotal + totalGst + shipping;
 
     res.json({
@@ -56,7 +57,7 @@ export const getCart = async (req: AuthRequest, res: Response): Promise<void> =>
         shipping,
         finalTotal: Number(finalTotal.toFixed(2)),
         freeShippingThreshold: 5000,
-        amountToFreeShipping: Math.max(0, 5000 - subtotal)
+        amountToFreeShipping: 0
       }
     });
   } catch (error: any) {

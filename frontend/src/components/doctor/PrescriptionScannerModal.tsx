@@ -19,16 +19,19 @@ export const PrescriptionScannerModal: React.FC<Props> = ({ isOpen, onClose }) =
     setTimeout(() => {
       setAnalyzing(false);
       setExtractedItems([
-        { id: '1', name: '3M Filtek Z350 XT Composite (Shade A2)', qty: 2, confidence: 98, price: 1850 },
-        { id: '2', name: 'Karam Nitrile Medical Gloves (Box of 100)', qty: 3, confidence: 95, price: 450 },
-        { id: '3', name: 'Dentsply Protaper Gold Rotary Files 25mm', qty: 1, confidence: 92, price: 2650 }
+        { id: '1', slug: 'smart-nanofill-hybrid-composite-kit', name: 'Smart Nanofill Hybrid Composite Restorative Kit', qty: 2, confidence: 98, price: 1850 },
+        { id: '2', slug: 'karam-nitrile-gloves-100-pcs', name: 'Karam Nitrile Medical Gloves (Box of 100)', qty: 3, confidence: 95, price: 450 },
+        { id: '3', slug: 'true-endo-niti-rotary-files-pack', name: 'True Endo NiTi Rotary Endodontic Files (Assorted)', qty: 1, confidence: 92, price: 2650 }
       ]);
     }, 1500);
   };
 
   const handleAddAll = async () => {
-    // Composite + Gloves + Files
-    await addToCart('1', 2);
+    if (extractedItems) {
+      for (const item of extractedItems) {
+        await addToCart(item.slug || item.id, item.qty || 1);
+      }
+    }
     onClose();
   };
 

@@ -21,7 +21,7 @@ export const AdminHeader: React.FC<Props> = ({ title, subtitle, actionButton }) 
           <button
             type="button"
             onClick={toggleMobileSidebar}
-            className="lg:hidden p-1.5 -ml-1 text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition shrink-0"
+            className="xl:hidden p-1.5 -ml-1 text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition shrink-0"
             aria-label="Toggle Navigation Drawer"
           >
             <Menu size={18} className="w-4.5 h-4.5" />

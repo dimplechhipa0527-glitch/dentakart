@@ -55,7 +55,7 @@ export const AdminSidebar: React.FC = () => {
           <button
             type="button"
             onClick={closeMobileSidebar}
-            className="lg:hidden p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="xl:hidden p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
             aria-label="Close menu"
           >
             <X size={16} className="w-4 h-4" />
@@ -121,13 +121,13 @@ export const AdminSidebar: React.FC = () => {
   return (
     <>
       {/* 1. Desktop Persistent Sidebar */}
-      <aside className="hidden lg:flex w-60 bg-slate-900 text-slate-300 min-h-screen border-r border-slate-800 flex-col shrink-0 sticky top-0 h-screen">
+      <aside className="hidden xl:flex w-60 bg-slate-900 text-slate-300 min-h-screen border-r border-slate-800 flex-col shrink-0 sticky top-0 h-screen">
         {sidebarContent}
       </aside>
 
-      {/* 2. Mobile Drawer & Backdrop */}
+      {/* 2. Mobile / Tablet Drawer & Backdrop */}
       {isMobileSidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 xl:hidden">
           {/* Backdrop */}
           <div
             className="fixed inset-0 bg-slate-950/80 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"

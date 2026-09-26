@@ -86,6 +86,17 @@ const altClientDistPath = path.resolve(__dirname, '../client_dist');
 const publicStaticPath = fs.existsSync(clientDistPath) ? clientDistPath : altClientDistPath;
 
 if (fs.existsSync(publicStaticPath)) {
+  // Explicit Direct APK Download
+  app.get(['/download/DentaKart.apk', '/download/apk', '/d'], (req: Request, res: Response) => {
+    const primaryPath = path.resolve(publicStaticPath, 'download/DentaKart.apk');
+    const rootPath = path.resolve(__dirname, '../../RELEASE_BUILDS/DentaKart-Installable.apk');
+    const target = fs.existsSync(primaryPath) ? primaryPath : rootPath;
+    if (fs.existsSync(target)) {
+      return res.download(target, 'DentaKart.apk');
+    }
+    res.status(404).json({ success: false, message: 'APK not found' });
+  });
+
   app.use(express.static(publicStaticPath));
 
   // SPA Route Fallback (Serves Storefront, Admin Portal, Doctor Cart, etc.)
