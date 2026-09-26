@@ -63,7 +63,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-850 shadow-xs pt-[env(safe-area-inset-top)]">
+      <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-850 shadow-xs pt-[max(env(safe-area-inset-top,0px),2.5rem)] sm:pt-0">
         {/* Top Info Bar (Desktop only to save mobile screen height) */}
         <div className="hidden sm:flex bg-teal-700 text-white text-[11px] py-1 px-4 font-medium items-center justify-between">
           <div className="flex items-center gap-2">

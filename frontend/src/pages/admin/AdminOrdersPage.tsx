@@ -122,8 +122,8 @@ export const AdminOrdersPage: React.FC = () => {
                           #{order.orderNumber}
                         </span>
                         {shipping.expressDelivery && (
-                          <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 flex items-center gap-0.5">
-                            <Sparkles className="w-2.5 h-2.5" /> 15-MIN
+                          <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-teal-500 text-white flex items-center gap-0.5">
+                            <Sparkles className="w-2.5 h-2.5" /> EXPRESS
                           </span>
                         )}
                       </div>

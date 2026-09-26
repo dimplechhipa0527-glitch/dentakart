@@ -132,9 +132,9 @@ export const AdminAnalyticsPage: React.FC = () => {
               </div>
 
               <div className="p-3 sm:p-4 rounded-2xl bg-cyan-50/50 dark:bg-cyan-950/20 border border-cyan-100 dark:border-cyan-900 space-y-0.5">
-                <span className="text-[10px] text-cyan-600 font-bold uppercase block truncate">15-Min Delivery</span>
-                <p className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">16.2 Mins</p>
-                <span className="text-[10px] text-slate-500 block truncate">Silvassa metro hub</span>
+                <span className="text-[10px] text-cyan-600 font-bold uppercase block truncate">Express Delivery</span>
+                <p className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">Same-Day</p>
+                <span className="text-[10px] text-slate-500 block truncate">Priority hub dispatch</span>
               </div>
 
               <div className="p-3 sm:p-4 rounded-2xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900 space-y-0.5">

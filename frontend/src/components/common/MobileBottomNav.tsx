@@ -178,7 +178,10 @@ export const MobileBottomNav: React.FC = () => {
 
       {/* Action Sheet for Scan Rx vs Ask DentaAI */}
       {showAiSheet && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in">
+        <div
+          onClick={() => setShowAiSheet(false)}
+          className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in cursor-pointer"
+        >
           <div
             className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-in slide-in-from-bottom-6 duration-200"
             onClick={(e) => e.stopPropagation()}

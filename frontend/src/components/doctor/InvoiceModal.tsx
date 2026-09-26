@@ -166,7 +166,7 @@ export const InvoiceModal: React.FC<Props> = ({ order, isOpen, onClose }) => {
                 Place of Supply: {ship.state || 'Dadra & Nagar Haveli'}
               </p>
               <p className="text-teal-700 dark:text-teal-300 text-[10px] font-semibold pt-1">
-                ⚡ 15-20 Min Express Hub Dispatch
+                ⚡ Priority Express Hub Dispatch
               </p>
             </div>
           </div>
@@ -256,7 +256,7 @@ export const InvoiceModal: React.FC<Props> = ({ order, isOpen, onClose }) => {
                 <span className="font-mono">₹{order.gstAmount?.toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                <span>15-Min Express Delivery:</span>
+                <span>Express Clinic Delivery:</span>
                 <span className="font-mono text-emerald-600 font-bold">FREE</span>
               </div>
               <div className="pt-2 border-t-2 border-teal-600 flex justify-between font-black text-sm text-slate-900 dark:text-white">

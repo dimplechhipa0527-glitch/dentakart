@@ -144,7 +144,7 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
           <div style="text-align: right;">
             <div style="font-weight: 900; font-size: 16px;">Order #${order.orderNumber}</div>
             <div style="color: #64748b;">${new Date(order.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
-            <span class="badge">${order.shippingAddress?.expressDelivery ? '⚡ 15-MIN LIGHTNING DISPATCH' : 'STANDARD COURIER'}</span>
+            <span class="badge">${order.shippingAddress?.expressDelivery ? '⚡ EXPRESS DISPATCH' : 'STANDARD COURIER'}</span>
           </div>
         </div>
 
@@ -244,8 +244,8 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
                   ● {order.status.replace(/_/g, ' ')}
                 </span>
                 {shipping.expressDelivery && (
-                  <span className="text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 flex items-center gap-1 shadow-xs">
-                    <Sparkles className="w-3 h-3" /> 15-MIN
+                  <span className="text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full bg-teal-600 text-white flex items-center gap-1 shadow-xs">
+                    <Sparkles className="w-3 h-3" /> EXPRESS
                   </span>
                 )}
               </div>
@@ -547,7 +547,7 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
                   <option value="Delhivery Surface">Delhivery Surface</option>
                   <option value="DTDC Medical Cargo">DTDC Medical Cargo</option>
                   <option value="Shadowfax Courier">Shadowfax Courier</option>
-                  <option value="DentaKart 15-Min Rider">DentaKart 15-Min Rider</option>
+                  <option value="DentaKart Express Rider">DentaKart Express Rider</option>
                 </select>
               </div>
 

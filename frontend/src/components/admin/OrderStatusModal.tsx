@@ -95,7 +95,7 @@ export const OrderStatusModal: React.FC<Props> = ({ order, isOpen, onClose, onSu
                 <option value="Blue Dart Express">Blue Dart Express</option>
                 <option value="Delhivery Surface">Delhivery Surface</option>
                 <option value="DTDC Medical Cargo">DTDC Medical Cargo</option>
-                <option value="DentaKart 15-Min Rider">DentaKart 15-Min Rider</option>
+                <option value="DentaKart Express Rider">DentaKart Express Rider</option>
               </select>
             </div>
 

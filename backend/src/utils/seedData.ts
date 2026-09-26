@@ -1618,7 +1618,7 @@ export const seedCoupons = [
   },
   {
     code: 'DENTA100',
-    description: 'Flat ₹100 off on emergency 15-min express orders over ₹1,000',
+    description: 'Flat ₹100 off on express clinic orders over ₹1,000',
     discountType: 'FIXED',
     discountValue: 100,
     minOrderValue: 1000,
@@ -1634,7 +1634,7 @@ export const seedCoupons = [
   },
   {
     code: 'FREESHIP',
-    description: 'Free instant 15-minute express priority courier on all orders',
+    description: 'Free express priority courier on all clinic orders',
     discountType: 'FIXED',
     discountValue: 100,
     minOrderValue: 500,

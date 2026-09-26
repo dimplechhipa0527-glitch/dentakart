@@ -47,7 +47,7 @@ export const LoginPage: React.FC = () => {
           </span>
         </Link>
         <h2 className="text-lg font-bold text-slate-900 dark:text-white">Doctor & Clinic Sign In</h2>
-        <p className="text-xs text-slate-500">Access your clinic orders, 15-min express delivery, and B2B GST tax invoices</p>
+        <p className="text-xs text-slate-500">Access your clinic orders, express clinic delivery, and B2B GST tax invoices</p>
       </div>
 
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md">

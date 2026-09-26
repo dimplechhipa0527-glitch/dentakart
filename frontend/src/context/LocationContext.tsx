@@ -326,7 +326,7 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         latitude: lat,
         longitude: lon,
         isGpsDetected: true,
-        deliveryTimeEstimate: '⚡ 15-20 MINS',
+        deliveryTimeEstimate: '⚡ EXPRESS DELIVERY',
         deliveryType: 'EXPRESS_LOCAL',
         deliveryHub: 'Nearest Priority Dispatch Hub'
       };

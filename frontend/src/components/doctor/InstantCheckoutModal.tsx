@@ -92,7 +92,7 @@ export const InstantCheckoutModal: React.FC<Props> = ({ isOpen, onClose }) => {
               <span className="text-xs uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400">Payment Successful</span>
               <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-1">Order #{orderSuccess.orderNumber} Confirmed!</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Your B2B dental order is being packed for 15-min priority dispatch.
+                Your B2B dental order is being packed for priority dispatch.
               </p>
             </div>
 

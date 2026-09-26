@@ -44,7 +44,7 @@ export const getCart = async (req: AuthRequest, res: Response): Promise<void> =>
       };
     });
 
-    // Promotional 15-min Lightning Delivery is 100% FREE for verified clinic accounts
+    // Priority Express Delivery is 100% FREE for verified clinic accounts
     const shipping = 0;
     const finalTotal = subtotal + totalGst + shipping;
 
