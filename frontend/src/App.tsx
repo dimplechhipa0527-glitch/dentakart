@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
@@ -51,6 +51,7 @@ import { AdminLoginPage } from './pages/auth/AdminLoginPage';
 // Admin Guard
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading, isAdmin } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -64,7 +65,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
   return (

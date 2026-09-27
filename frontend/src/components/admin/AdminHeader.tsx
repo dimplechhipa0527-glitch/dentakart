@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu, ShieldCheck, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Menu, ShieldCheck, User, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useAdminUI } from '../../context/AdminUIContext';
 
@@ -10,8 +11,14 @@ interface Props {
 }
 
 export const AdminHeader: React.FC<Props> = ({ title, subtitle, actionButton }) => {
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const { toggleMobileSidebar } = useAdminUI();
+
+  const handleSignOut = () => {
+    logout();
+    navigate('/admin/login');
+  };
 
   return (
     <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-3.5 pb-2.5 pt-[max(env(safe-area-inset-top,0px),3rem)] sm:pt-3.5 sm:pb-3.5 sm:px-6 sticky top-0 z-30 shadow-xs">
@@ -55,6 +62,17 @@ export const AdminHeader: React.FC<Props> = ({ title, subtitle, actionButton }) 
                 admin@dentakart.com
               </p>
             </div>
+
+            {/* Quick Sign Out Button */}
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/20 text-[11px] font-bold transition cursor-pointer ml-1"
+              title="Sign Out of Seller Portal"
+            >
+              <LogOut size={13} className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Sign Out</span>
+            </button>
           </div>
         </div>
       </div>

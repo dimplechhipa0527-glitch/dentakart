@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Package,
@@ -12,12 +12,16 @@ import {
   BarChart3,
   ArrowLeft,
   X,
-  ShieldCheck
+  ShieldCheck,
+  LogOut
 } from 'lucide-react';
 import { useAdminUI } from '../../context/AdminUIContext';
+import { useAuth } from '../../context/AuthContext';
 
 export const AdminSidebar: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const { isMobileSidebarOpen, closeMobileSidebar } = useAdminUI();
 
   const navItems = [
@@ -104,16 +108,18 @@ export const AdminSidebar: React.FC = () => {
           <ArrowLeft size={13} className="w-3.5 h-3.5 text-teal-500 shrink-0" />
           <span className="truncate">View Customer Storefront</span>
         </Link>
-        <Link
-          to="/admin/login"
+        <button
+          type="button"
           onClick={() => {
             closeMobileSidebar();
-            localStorage.removeItem('dentakart_token');
+            logout();
+            navigate('/admin/login');
           }}
-          className="flex items-center gap-2 w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 transition"
+          className="flex items-center gap-2 w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 transition cursor-pointer text-left"
         >
-          <span className="text-xs">🚪 Sign Out of Admin</span>
-        </Link>
+          <LogOut size={13} className="w-3.5 h-3.5 shrink-0" />
+          <span className="truncate">Sign Out of Admin</span>
+        </button>
       </div>
     </div>
   );

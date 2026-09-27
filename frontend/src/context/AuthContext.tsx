@@ -9,7 +9,7 @@ interface AuthContextType {
   isAdmin: boolean;
   isDoctor: boolean;
   loading: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; message?: string; user?: User }>;
   register: (data: any) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   switchDemoUser: (role: 'DOCTOR_RAHUL' | 'DOCTOR_NEHA' | 'ADMIN') => Promise<void>;
@@ -56,7 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('dentakart_token', res.data.token);
         setToken(res.data.token);
         setUser(res.data.user);
-        return { success: true };
+        return { success: true, user: res.data.user };
       }
       return { success: false, message: res.data.message };
     } catch (err: any) {
