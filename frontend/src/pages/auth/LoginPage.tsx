@@ -137,9 +137,14 @@ export const LoginPage: React.FC = () => {
                 Register Clinic Account
               </Link>
             </div>
-            <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-              <Link to="/admin/login" className="text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
-                🏢 Are you a Seller / Operations Admin? <span className="text-teal-600 font-semibold underline">Seller Login</span>
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-center gap-2 text-[11px] text-slate-400">
+              <span>Management Portals:</span>
+              <Link to="/seller/login" className="text-teal-600 dark:text-teal-400 font-semibold hover:underline">
+                🏢 Seller Portal
+              </Link>
+              <span className="opacity-40">•</span>
+              <Link to="/admin/login" className="text-teal-600 dark:text-teal-400 font-semibold hover:underline">
+                🛡️ Admin Portal
               </Link>
             </div>
           </div>

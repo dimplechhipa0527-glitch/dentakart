@@ -116,16 +116,23 @@ export const Footer: React.FC = () => {
       {/* Bottom Legal & Discreet Seller Login */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-3">
         <p>© 2026 DentaKart Marketplace India Pvt Ltd. All rights reserved.</p>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <p className="flex items-center gap-1">
             Built with <Heart className="w-3 h-3 text-rose-500 fill-rose-500" /> for Dental Surgeons
           </p>
           <span className="opacity-40">|</span>
           <Link
-            to="/admin/login"
-            className="text-slate-500 hover:text-teal-400 font-semibold transition flex items-center gap-1"
+            to="/seller/login"
+            className="text-slate-400 hover:text-teal-400 font-semibold transition flex items-center gap-1"
           >
-            <span>🔒 Seller & Admin Login</span>
+            <span>🏢 Seller Portal</span>
+          </Link>
+          <span className="opacity-40">•</span>
+          <Link
+            to="/admin/login"
+            className="text-slate-400 hover:text-teal-400 font-semibold transition flex items-center gap-1"
+          >
+            <span>🛡️ Admin Portal</span>
           </Link>
         </div>
       </div>

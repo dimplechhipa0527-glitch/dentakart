@@ -65,7 +65,8 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+    const isSeller = location.pathname.startsWith('/seller');
+    return <Navigate to={isSeller ? "/seller/login" : "/admin/login"} state={{ from: location }} replace />;
   }
 
   return (
@@ -109,10 +110,12 @@ export const AppContent: React.FC = () => {
         <Route path="/register" element={<RegisterDoctorPage />} />
 
         {/* Seller & Admin Auth */}
-        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin/login" element={<AdminLoginPage defaultPortal="admin" />} />
+        <Route path="/seller/login" element={<AdminLoginPage defaultPortal="seller" />} />
         <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/seller" element={<Navigate to="/seller/dashboard" replace />} />
 
-        {/* Seller Operations Backend Suite */}
+        {/* Seller Operations Backend Suite (Supports both /admin/* and /seller/* URLs) */}
         <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
         <Route path="/admin/products" element={<AdminLayout><AdminProductsPage /></AdminLayout>} />
         <Route path="/admin/inventory" element={<AdminLayout><AdminInventoryPage /></AdminLayout>} />
@@ -122,6 +125,11 @@ export const AppContent: React.FC = () => {
         <Route path="/admin/categories" element={<AdminLayout><AdminCategoriesPage /></AdminLayout>} />
         <Route path="/admin/reviews" element={<AdminLayout><AdminReviewsPage /></AdminLayout>} />
         <Route path="/admin/analytics" element={<AdminLayout><AdminAnalyticsPage /></AdminLayout>} />
+
+        <Route path="/seller/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
+        <Route path="/seller/products" element={<AdminLayout><AdminProductsPage /></AdminLayout>} />
+        <Route path="/seller/inventory" element={<AdminLayout><AdminInventoryPage /></AdminLayout>} />
+        <Route path="/seller/orders" element={<AdminLayout><AdminOrdersPage /></AdminLayout>} />
 
         {/* Doctor / Buyer Customer Store Routes */}
         <Route path="/" element={<DoctorLayout><DoctorHomePage /></DoctorLayout>} />
