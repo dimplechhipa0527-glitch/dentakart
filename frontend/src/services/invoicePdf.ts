@@ -1,7 +1,20 @@
 import jsPDF from 'jspdf';
 import { Order } from '../types';
 
-export const generateInvoicePDF = (order: Order) => {
+export const generateInvoicePDF = (order: Order, customCompany?: any) => {
+  let company = customCompany;
+  if (!company) {
+    try {
+      const saved = localStorage.getItem('dentakart_company_settings');
+      if (saved) company = JSON.parse(saved);
+    } catch (e) {}
+  }
+  const compName = company?.companyName || 'Integrity Enterprises';
+  const ownerName = company?.ownerName || 'Krishna';
+  const platformName = (company?.platformName || 'DentaKart').toUpperCase();
+  const gstin = company?.gstin || '27AABCD1234F1Z5';
+  const hubName = company?.dispatchHubName || 'Silvassa Central Logistics Hub';
+
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -18,13 +31,13 @@ export const generateInvoicePDF = (order: Order) => {
 
   // Company Name / Logo text
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(18);
+  doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
-  doc.text('DENTAKART', 14, 15);
+  doc.text(platformName, 14, 15);
 
-  doc.setFontSize(10);
+  doc.setFontSize(9.5);
   doc.setFont('helvetica', 'normal');
-  doc.text('India\'s B2B Dental Supplies Marketplace | GSTIN: 27AABCD1234F1Z5', 60, 15);
+  doc.text(`${compName} (Prop. ${ownerName}) | GSTIN: ${gstin}`, 58, 15);
 
   // Invoice Title & Info
   doc.setTextColor(15, 23, 42);
@@ -154,9 +167,9 @@ export const generateInvoicePDF = (order: Order) => {
   doc.setTextColor(148, 163, 184);
   doc.setFontSize(7.5);
   doc.setFont('helvetica', 'normal');
-  doc.text('• This is a computer-generated tax invoice for dental supplies procurement and does not require a physical signature.', 14, 270);
-  doc.text('• All dental instruments and medical materials are subject to standard manufacturer warranty and return policies.', 14, 274);
-  doc.text('• For support or GST input credit reconciliation, contact support@dentakart.com or call +91 1800-DENTAKART.', 14, 278);
+  doc.text(`• Dispatched by ${compName} (Proprietor: ${ownerName}) • ${hubName}.`, 14, 270);
+  doc.text('• This is a computer-generated tax invoice for dental supplies procurement and does not require a physical signature.', 14, 274);
+  doc.text('• All dental instruments and medical materials are subject to standard manufacturer warranty and return policies.', 14, 278);
 
   // Save the PDF
   doc.save(`${invNum}.pdf`);

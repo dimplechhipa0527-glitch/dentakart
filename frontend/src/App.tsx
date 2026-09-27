@@ -42,6 +42,8 @@ import { AdminCouponsPage } from './pages/admin/AdminCouponsPage';
 import { AdminCategoriesPage } from './pages/admin/AdminCategoriesPage';
 import { AdminReviewsPage } from './pages/admin/AdminReviewsPage';
 import { AdminAnalyticsPage } from './pages/admin/AdminAnalyticsPage';
+import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
+import { CompanyProvider } from './context/CompanyContext';
 
 // Auth Pages
 import { LoginPage } from './pages/auth/LoginPage';
@@ -125,11 +127,13 @@ export const AppContent: React.FC = () => {
         <Route path="/admin/categories" element={<AdminLayout><AdminCategoriesPage /></AdminLayout>} />
         <Route path="/admin/reviews" element={<AdminLayout><AdminReviewsPage /></AdminLayout>} />
         <Route path="/admin/analytics" element={<AdminLayout><AdminAnalyticsPage /></AdminLayout>} />
+        <Route path="/admin/settings" element={<AdminLayout><AdminSettingsPage /></AdminLayout>} />
 
         <Route path="/seller/dashboard" element={<AdminLayout><AdminDashboardPage /></AdminLayout>} />
         <Route path="/seller/products" element={<AdminLayout><AdminProductsPage /></AdminLayout>} />
         <Route path="/seller/inventory" element={<AdminLayout><AdminInventoryPage /></AdminLayout>} />
         <Route path="/seller/orders" element={<AdminLayout><AdminOrdersPage /></AdminLayout>} />
+        <Route path="/seller/settings" element={<AdminLayout><AdminSettingsPage /></AdminLayout>} />
 
         {/* Doctor / Buyer Customer Store Routes */}
         <Route path="/" element={<DoctorLayout><DoctorHomePage /></DoctorLayout>} />
@@ -152,21 +156,23 @@ export const AppContent: React.FC = () => {
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <LocationProvider>
-          <CartProvider>
-            <WishlistProvider>
-              <NotificationProvider>
-                <ViewModeProvider>
-                  <AdminUIProvider>
-                    <AppContent />
-                  </AdminUIProvider>
-                </ViewModeProvider>
-              </NotificationProvider>
-            </WishlistProvider>
-          </CartProvider>
-        </LocationProvider>
-      </AuthProvider>
+      <CompanyProvider>
+        <AuthProvider>
+          <LocationProvider>
+            <CartProvider>
+              <WishlistProvider>
+                <NotificationProvider>
+                  <ViewModeProvider>
+                    <AdminUIProvider>
+                      <AppContent />
+                    </AdminUIProvider>
+                  </ViewModeProvider>
+                </NotificationProvider>
+              </WishlistProvider>
+            </CartProvider>
+          </LocationProvider>
+        </AuthProvider>
+      </CompanyProvider>
     </BrowserRouter>
   );
 };

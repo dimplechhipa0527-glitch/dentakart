@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Truck, Clock, RefreshCw, Award, Heart } from 'lucide-react';
+import { useCompany } from '../../context/CompanyContext';
 
 export const Footer: React.FC = () => {
+  const { settings: companySettings } = useCompany();
   return (
     <footer className="bg-slate-900 text-slate-300 pt-12 pb-8 border-t border-slate-800 no-print mt-16">
       {/* Top Value Badges */}
@@ -67,9 +69,9 @@ export const Footer: React.FC = () => {
             DentaKart is India's dedicated B2B marketplace engineered exclusively for dental surgeons, orthodontists, and dental institutions. Streamlining inventory restock with verified GST invoices and cold-chain compliance.
           </p>
           <div className="pt-2 text-slate-400 text-[11px] space-y-0.5">
-            <p><strong>Operated by:</strong> Integrity Enterprises</p>
-            <p><strong>Central Warehouse:</strong> Silvassa, Dadra and Nagar Haveli 396230</p>
-            <p><strong>WhatsApp / Order Desk:</strong> <a href="https://wa.me/919316839711" target="_blank" rel="noreferrer" className="text-emerald-400 font-bold hover:underline">+91 93168 39711</a></p>
+            <p><strong>Operated by:</strong> {companySettings.companyName} (Proprietor: <span className="text-teal-300 font-bold">{companySettings.ownerName}</span>)</p>
+            <p><strong>Central Warehouse:</strong> {companySettings.addressLine}, {companySettings.city} {companySettings.pincode}</p>
+            <p><strong>WhatsApp / Order Desk:</strong> <a href={`https://wa.me/${companySettings.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="text-emerald-400 font-bold hover:underline">{companySettings.phone}</a></p>
           </div>
         </div>
 
@@ -102,11 +104,11 @@ export const Footer: React.FC = () => {
           <h4 className="font-bold text-white uppercase tracking-wider text-[11px]">Doctor Support</h4>
           <ul className="space-y-1.5 text-slate-400">
             <li>
-              <a href="https://wa.me/919316839711" target="_blank" rel="noreferrer" className="text-emerald-400 font-bold block hover:underline">
-                💬 WhatsApp: +91 93168 39711
+              <a href={`https://wa.me/${companySettings.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="text-emerald-400 font-bold block hover:underline">
+                💬 WhatsApp: {companySettings.phone}
               </a>
             </li>
-            <li><span className="text-slate-400 block">📞 Direct: +91 93168 39711</span></li>
+            <li><span className="text-slate-400 block">📞 Direct: {companySettings.phone}</span></li>
             <li><span className="text-slate-400 block">Mon - Sat: 8 AM - 10 PM</span></li>
             <li><span className="text-emerald-400 text-[11px] font-semibold block">⚡ Silvassa Express Hub</span></li>
           </ul>

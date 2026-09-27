@@ -19,10 +19,13 @@ import {
   ChevronRight,
   Sparkles,
   QrCode,
-  DollarSign
+  DollarSign,
+  Edit3,
+  Save
 } from 'lucide-react';
 import { Order } from '../../types';
 import api from '../../services/api';
+import { useCompany } from '../../context/CompanyContext';
 
 interface Props {
   order: Order | null;
@@ -46,6 +49,14 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
   const [paymentStatus, setPaymentStatus] = useState<string>(order?.paymentStatus || 'SUCCESS');
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [successMsg, setSuccessMsg] = useState<string>('');
+
+  const { settings: companySettings, updateSettings } = useCompany();
+  const [isEditCompanyOpen, setIsEditCompanyOpen] = useState(false);
+  const [editCompanyForm, setEditCompanyForm] = useState(companySettings);
+
+  React.useEffect(() => {
+    setEditCompanyForm(companySettings);
+  }, [companySettings]);
 
   // Sync state when order changes
   React.useEffect(() => {
@@ -120,14 +131,14 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
       <!DOCTYPE html>
       <html>
       <head>
-        <title>DentaKart - Packing Slip #${order.orderNumber}</title>
+        <title>${companySettings.companyName} - Dispatch Slip #${order.orderNumber}</title>
         <style>
           body { font-family: 'Segoe UI', Arial, sans-serif; padding: 24px; color: #1e293b; font-size: 13px; line-height: 1.4; }
           .header { border-bottom: 2px solid #0d9488; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start; }
           .logo { font-size: 22px; font-weight: 900; color: #0f766e; }
           .badge { background: #f0fdfa; color: #0d9488; border: 1px solid #99f6e4; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
-          .section { margin-top: 16px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
-          .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+          .section { margin-top: 14px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
+          .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
           table { width: 100%; border-collapse: collapse; margin-top: 12px; }
           th { background: #f8fafc; text-align: left; padding: 8px; border-bottom: 2px solid #e2e8f0; font-size: 11px; }
           td { padding: 8px; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
@@ -138,8 +149,16 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
       <body>
         <div class="header">
           <div>
-            <div class="logo">🦷 DENTAKART DISPATCH SLIP</div>
-            <div style="font-size: 11px; color: #64748b;">B2B Dental Supply Logistics Hub</div>
+            <div class="logo">🦷 ${companySettings.platformName.toUpperCase()} DISPATCH SLIP</div>
+            <div style="font-size: 13px; font-weight: 800; color: #0f766e; margin-top: 2px;">
+              ${companySettings.companyName}
+            </div>
+            <div style="font-size: 11px; font-weight: 600; color: #334155;">
+              Proprietor / Owner: <strong style="color: #0f766e;">${companySettings.ownerName}</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 1px;">
+              ${companySettings.dispatchHubName} • GSTIN: <strong>${companySettings.gstin}</strong>
+            </div>
           </div>
           <div style="text-align: right;">
             <div style="font-weight: 900; font-size: 16px;">Order #${order.orderNumber}</div>
@@ -148,7 +167,19 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
           </div>
         </div>
 
-        <div class="grid" style="margin-top: 16px;">
+        <div class="grid" style="margin-top: 14px;">
+          <!-- Dispatched From (Company & Owner) -->
+          <div class="section" style="background: #f0fdfa; border-color: #99f6e4;">
+            <strong style="color: #0f766e;">🏢 DISPATCHED FROM (COMPANY & OWNER)</strong>
+            <div style="font-size: 14px; font-weight: 800; margin-top: 4px; color: #0f172a;">${companySettings.companyName}</div>
+            <div style="font-weight: 700; color: #0f766e; margin-top: 1px;">Proprietor / Owner: ${companySettings.ownerName}</div>
+            <div style="margin-top: 4px; color: #334155; font-size: 12px;">${companySettings.addressLine}, ${companySettings.city}, ${companySettings.state} - <strong>${companySettings.pincode}</strong></div>
+            <div style="margin-top: 5px; font-size: 11px; color: #475569;">
+              <strong>GSTIN:</strong> ${companySettings.gstin} | <strong>Order Desk:</strong> ${companySettings.phone}
+            </div>
+          </div>
+
+          <!-- Ship To (Doctor / Clinic) -->
           <div class="section">
             <strong style="color: #0f766e;">🏥 SHIP TO (DOCTOR / CLINIC)</strong>
             <div style="font-size: 14px; font-weight: bold; margin-top: 4px;">${doctorName}</div>
@@ -159,21 +190,24 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
             ${gstNumber ? `<div><strong>GSTIN:</strong> ${gstNumber}</div>` : ''}
             ${shipping.deliveryInstructions ? `<div style="margin-top: 6px; background: #fffbeb; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #b45309;"><strong>Delivery Note:</strong> ${shipping.deliveryInstructions}</div>` : ''}
           </div>
+        </div>
 
-          <div class="section">
-            <strong style="color: #0f766e;">🚚 DISPATCH & COURIER DETAILS</strong>
-            <div style="margin-top: 6px;"><strong>Courier:</strong> ${courierName || 'Blue Dart Express'}</div>
-            <div><strong>AWB / Tracking:</strong> ${trackingNumber || 'PENDING DISPATCH'}</div>
+        <div class="section" style="margin-top: 14px;">
+          <strong style="color: #0f766e;">🚚 DISPATCH & COURIER DETAILS</strong>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px;">
+            <div><strong>Courier Partner:</strong> ${courierName || 'Blue Dart Express'}</div>
+            <div><strong>AWB / Tracking #:</strong> ${trackingNumber || 'PENDING DISPATCH'}</div>
             <div><strong>Payment Method:</strong> ${order.paymentMethod} (${order.paymentStatus})</div>
             <div><strong>Order Value:</strong> ₹${order.totalAmount.toLocaleString('en-IN')}</div>
-            <div style="margin-top: 8px; border-top: 1px dashed #cbd5e1; padding-top: 6px; font-size: 11px; color: #64748b;">
-              Packed by: Warehouse Station A-4<br/>
-              Cold-chain check: Verified (Gel packs applied if required)
-            </div>
+          </div>
+          <div style="margin-top: 8px; border-top: 1px dashed #cbd5e1; padding-top: 6px; font-size: 11px; color: #64748b;">
+            <strong>Packed by:</strong> ${companySettings.packedByTag}<br/>
+            <strong>Dispatched by:</strong> ${companySettings.companyName} (Authorized Signatory: <strong>${companySettings.ownerName}</strong>)<br/>
+            Cold-chain quality check: Verified (Gel packs applied if required)
           </div>
         </div>
 
-        <div class="section" style="margin-top: 16px;">
+        <div class="section" style="margin-top: 14px;">
           <strong style="color: #0f766e;">📦 ORDERED DENTAL SUPPLIES & ITEMS</strong>
           <table>
             <thead>
@@ -210,7 +244,7 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
         </div>
 
         <div class="footer">
-          Thank you for ordering with DentaKart India • Helpline: +91 8000-DENTIST • Support: support@dentakart.com
+          Operated by <strong>${companySettings.companyName}</strong> (Proprietor: <strong>${companySettings.ownerName}</strong>) • ${companySettings.platformName} Logistics Desk: ${companySettings.phone} • Email: ${companySettings.email}
         </div>
       </body>
       </html>
@@ -257,8 +291,17 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
 
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
+              onClick={() => setIsEditCompanyOpen(true)}
+              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-teal-50 dark:bg-teal-950/60 border border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-300 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs hover:bg-teal-100 dark:hover:bg-teal-900/60 cursor-pointer"
+              title="Change Company and Owner Name on Dispatch Slip"
+            >
+              <Building2 className="w-3.5 h-3.5 text-teal-600" />
+              <span className="hidden sm:inline">Company/Owner</span>
+            </button>
+
+            <button
               onClick={printPackingSlip}
-              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 text-slate-700 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1 shadow-2xs"
+              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 text-slate-700 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1 shadow-2xs cursor-pointer"
               title="Print Packing Slip"
             >
               <Printer className="w-3.5 h-3.5 text-teal-600" />
@@ -620,6 +663,110 @@ export const AdminOrderDetailModal: React.FC<Props> = ({
           </button>
         </div>
       </div>
+
+      {/* Quick Edit Company & Owner Name Modal */}
+      {isEditCompanyOpen && (
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-teal-600" />
+                <h3 className="font-black text-sm text-slate-900 dark:text-white">Change Company & Owner Name</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsEditCompanyOpen(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateSettings(editCompanyForm);
+                setIsEditCompanyOpen(false);
+              }}
+              className="space-y-3 text-xs"
+            >
+              <div className="space-y-1">
+                <label className="font-bold text-slate-700 dark:text-slate-300">Company / Business Name</label>
+                <input
+                  type="text"
+                  required
+                  value={editCompanyForm.companyName}
+                  onChange={(e) => setEditCompanyForm({ ...editCompanyForm, companyName: e.target.value })}
+                  placeholder="e.g. Krishna Dental Supplies"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 font-bold text-slate-900 dark:text-white outline-none focus:border-teal-500"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-bold text-slate-700 dark:text-slate-300">Owner / Proprietor Name</label>
+                <input
+                  type="text"
+                  required
+                  value={editCompanyForm.ownerName}
+                  onChange={(e) => setEditCompanyForm({ ...editCompanyForm, ownerName: e.target.value })}
+                  placeholder="e.g. Krishna"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 font-bold text-slate-900 dark:text-white outline-none focus:border-teal-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-700 dark:text-slate-300">Seller GSTIN</label>
+                  <input
+                    type="text"
+                    required
+                    value={editCompanyForm.gstin}
+                    onChange={(e) => setEditCompanyForm({ ...editCompanyForm, gstin: e.target.value })}
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 font-mono text-slate-900 dark:text-white outline-none focus:border-teal-500"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-700 dark:text-slate-300">Phone / WhatsApp</label>
+                  <input
+                    type="text"
+                    required
+                    value={editCompanyForm.phone}
+                    onChange={(e) => setEditCompanyForm({ ...editCompanyForm, phone: e.target.value })}
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white outline-none focus:border-teal-500"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-bold text-slate-700 dark:text-slate-300">Warehouse Station / Packed By</label>
+                <input
+                  type="text"
+                  value={editCompanyForm.packedByTag}
+                  onChange={(e) => setEditCompanyForm({ ...editCompanyForm, packedByTag: e.target.value })}
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white outline-none focus:border-teal-500"
+                />
+              </div>
+
+              <div className="pt-2 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsEditCompanyOpen(false)}
+                  className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs flex items-center gap-1.5 shadow-md shadow-teal-600/20 cursor-pointer"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Save & Apply to Slip</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

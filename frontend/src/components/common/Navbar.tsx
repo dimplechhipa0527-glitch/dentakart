@@ -26,6 +26,7 @@ import { useWishlist } from '../../context/WishlistContext';
 import { useNotification } from '../../context/NotificationContext';
 import { useLocationContext } from '../../context/LocationContext';
 import { useViewMode } from '../../context/ViewModeContext';
+import { useCompany } from '../../context/CompanyContext';
 import { PrescriptionScannerModal } from '../doctor/PrescriptionScannerModal';
 import { DentaAIChatModal } from '../doctor/DentaAIChatModal';
 
@@ -37,6 +38,7 @@ export const Navbar: React.FC = () => {
   const { unreadCount, setIsOpen: setNotifOpen } = useNotification();
   const { location, isGpsLoading, setIsLocationModalOpen } = useLocationContext();
   const { viewMode, setViewMode } = useViewMode();
+  const { settings: companySettings } = useCompany();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [isRxModalOpen, setIsRxModalOpen] = useState(false);
@@ -67,18 +69,18 @@ export const Navbar: React.FC = () => {
         {/* Top Info Bar (Desktop only to save mobile screen height) */}
         <div className="hidden sm:flex bg-teal-700 text-white text-[11px] py-1 px-4 font-medium items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="bg-teal-800 text-[10px] font-bold px-2 py-0.5 rounded">INTEGRITY ENTERPRISES</span>
-            <span>Silvassa Hub • 100% Genuine Dental Materials with GST ITC Tax Invoicing</span>
+            <span className="bg-teal-800 text-[10px] font-bold px-2 py-0.5 rounded tracking-wide">{companySettings.companyName.toUpperCase()}</span>
+            <span>Proprietor: <strong className="text-teal-200">{companySettings.ownerName}</strong> • {companySettings.dispatchHubName} • 100% Genuine Dental Materials</span>
           </div>
 
           <div className="flex items-center justify-end gap-3 text-[11px]">
             <a
-              href="https://wa.me/919316839711"
+              href={`https://wa.me/${companySettings.phone.replace(/[^0-9]/g, '')}`}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1 font-bold text-emerald-300 hover:underline"
             >
-              <span>💬 WhatsApp: +91 93168 39711</span>
+              <span>💬 WhatsApp: {companySettings.phone}</span>
             </a>
             <span className="opacity-60">•</span>
             <span className="font-semibold text-teal-100 flex items-center gap-1">

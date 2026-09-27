@@ -13,15 +13,18 @@ import {
   ArrowLeft,
   X,
   ShieldCheck,
-  LogOut
+  LogOut,
+  Building2
 } from 'lucide-react';
 import { useAdminUI } from '../../context/AdminUIContext';
 import { useAuth } from '../../context/AuthContext';
+import { useCompany } from '../../context/CompanyContext';
 
 export const AdminSidebar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { settings: companySettings } = useCompany();
   const { isMobileSidebarOpen, closeMobileSidebar } = useAdminUI();
 
   const navItems = [
@@ -33,7 +36,8 @@ export const AdminSidebar: React.FC = () => {
     { name: 'Coupons & Promos', path: '/admin/coupons', icon: Tag },
     { name: 'Categories Tree', path: '/admin/categories', icon: FolderTree },
     { name: 'Reviews Moderation', path: '/admin/reviews', icon: Star },
-    { name: 'Financial Analytics', path: '/admin/analytics', icon: BarChart3 }
+    { name: 'Financial Analytics', path: '/admin/analytics', icon: BarChart3 },
+    { name: 'Company & Owner Profile', path: '/admin/settings', icon: Building2 }
   ];
 
   const sidebarContent = (
@@ -49,9 +53,9 @@ export const AdminSidebar: React.FC = () => {
             <div className="w-7 h-7 rounded-lg bg-teal-500 flex items-center justify-center text-slate-950 font-black text-xs shadow-md shadow-teal-500/20">
               DK
             </div>
-            <div>
-              <span className="font-bold text-white text-xs tracking-tight">DentaKart Admin</span>
-              <span className="block text-[9px] text-teal-400 font-semibold uppercase">Operations Suite</span>
+            <div className="min-w-0">
+              <span className="font-bold text-white text-xs tracking-tight truncate block max-w-[130px]">{companySettings.companyName}</span>
+              <span className="block text-[9px] text-teal-400 font-semibold uppercase truncate">Owner: {companySettings.ownerName}</span>
             </div>
           </Link>
 
@@ -96,9 +100,9 @@ export const AdminSidebar: React.FC = () => {
         <div className="p-2.5 rounded-xl bg-slate-800/60 border border-slate-700 text-xs">
           <div className="flex items-center gap-1.5 text-teal-400">
             <ShieldCheck size={13} className="w-3.5 h-3.5" />
-            <span className="text-[9px] font-bold uppercase">Seller Admin Active</span>
+            <span className="text-[9px] font-bold uppercase truncate">Owner: {companySettings.ownerName}</span>
           </div>
-          <p className="text-[10px] text-slate-300 mt-0.5">DentaKart Operations Hub</p>
+          <p className="text-[10px] text-slate-300 mt-0.5 truncate">{companySettings.companyName}</p>
         </div>
         <Link
           to="/"

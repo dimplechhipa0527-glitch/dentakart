@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Download, Printer, ShieldCheck, Share2, MessageCircle } from 'lucide-react';
 import { Order } from '../../types';
 import { generateInvoicePDF } from '../../services/invoicePdf';
+import { useCompany } from '../../context/CompanyContext';
 
 interface Props {
   order: Order | null;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const InvoiceModal: React.FC<Props> = ({ order, isOpen, onClose }) => {
+  const { settings: companySettings } = useCompany();
   if (!isOpen || !order) return null;
 
   const invNum = order.invoice?.invoiceNumber || `INV-2026-${order.orderNumber}`;
@@ -26,7 +28,7 @@ export const InvoiceModal: React.FC<Props> = ({ order, isOpen, onClose }) => {
   };
 
   const handleDownloadPdf = () => {
-    generateInvoicePDF(order);
+    generateInvoicePDF(order, companySettings);
   };
 
   const handleShareWhatsApp = () => {
@@ -107,18 +109,18 @@ export const InvoiceModal: React.FC<Props> = ({ order, isOpen, onClose }) => {
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-xl">🦷</span>
-                <span className="text-xl font-black text-slate-900 dark:text-white font-display">
-                  DENTA<span className="text-teal-600">KART</span>
+                <span className="text-xl font-black text-slate-900 dark:text-white font-display tracking-tight">
+                  {companySettings.platformName.toUpperCase()}
                 </span>
                 <span className="text-[9px] font-black uppercase bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 px-1 py-0.2 rounded border border-teal-200">
                   B2B
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 mt-0.5">
-                India's Premier Dental Supplies Marketplace & Express Hub
+              <p className="text-xs font-bold text-teal-700 dark:text-teal-300 mt-0.5">
+                {companySettings.companyName} • Proprietor: {companySettings.ownerName}
               </p>
               <p className="text-[10px] text-slate-500 font-mono">
-                Seller GSTIN: <strong className="text-slate-900 dark:text-white">27AABCD1234F1Z5</strong> | State: 27
+                Seller GSTIN: <strong className="text-slate-900 dark:text-white">{companySettings.gstin}</strong> | {companySettings.dispatchHubName}
               </p>
             </div>
 
